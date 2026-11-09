@@ -1,0 +1,122 @@
+---
+sidebar: sidebar 
+permalink: task_cli_migrate_deploy.html 
+keywords: administer, administering, cli, deploy, deploy instance, migrate 
+summary: コマンドラインインターフェイスを使用して、既存のDeploy管理ユーティリティのインスタンスを新しい仮想マシンに移行できます。 
+---
+= ONTAP Select Deployインスタンスを新しい仮想マシンに移行する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+コマンドラインインターフェイスを使用して、既存のDeploy管理ユーティリティのインスタンスを新しい仮想マシンに移行できます。
+
+この手順は、元の仮想マシンの構成データを使用する新しい仮想マシンを作成することに基づいています。新規仮想マシンと既存仮想マシンは、同じバージョンおよびリリースのDeployユーティリティを実行する必要があります。Deployユーティリティの別のバージョンやリリースに移行することはできません。
+
+
+
+[[step-1back-up-the-deploy-configuration-data]]
+== ステップ1：Deploy構成データをバックアップする
+
+仮想マシンの移行の一環として、デプロイ構成データのバックアップを作成する必要があります。ONTAP Selectクラスタの導入後にもバックアップを作成する必要があります。データは暗号化された単一のファイルに保存され、ローカルワークステーションにダウンロードできます。
+
+.開始する前に
+* バックアップ操作中に Deploy が他のタスクを実行していないことを確認してください。
+* 元のDeploy仮想マシンイメージを保存します。
++
+
+CAUTION: 元のDeploy仮想マシンイメージは、この手順の後半で、元の仮想マシンから新しい仮想マシンにDeploy構成データを復元する際に必要になります。
+
+
+
+.タスク概要
+作成するバックアップファイルには、仮想マシンのすべての構成データが保存されます。このデータは、ONTAP Selectクラスタを含む、導入環境の側面を記述しています。
+
+.手順
+. 管理者アカウントを使用して、SSH経由でデプロイユーティリティのCLIにサインインします。
+. Deploy サーバーの内部ディレクトリに保存されている Deploy 構成データのバックアップを作成します：
++
+[source, cli]
+----
+deploy backup create
+----
+. プロンプトが表示されたら、バックアップ用のパスワードを入力してください。
++
+バックアップファイルはパスワードに基づいて暗号化されます。
+
+. システムで使用可能なバックアップを表示します：
++
+[source, cli]
+----
+deploy backup show -detailed
+----
+. *Created* フィールドの日付に基づいてバックアップファイルを選択し、 *Download URL* の値を記録します。
++
+バックアップファイルには、URLからアクセスできます。
+
+. ウェブブラウザまたはCurlなどのユーティリティを使用して、URLからバックアップファイルをローカルワークステーションにダウンロードしてください。
+
+
+
+
+[[step-2-install-a-new-instance-of-the-deploy-virtual-machine]]
+== ステップ2：Deploy仮想マシンの新しいインスタンスをインストールします
+
+Deploy 仮想マシンの新しいインスタンスを作成し、元の仮想マシンの構成データで更新する必要があります。
+
+.開始する前に
+VMware環境でONTAP Select Deploy仮想マシンをダウンロードして導入するために使用される手順に精通している必要があります。
+
+.タスク概要
+このタスクは概要レベルで説明されています。
+
+.手順
+. Deploy仮想マシンの新しいインスタンスを作成します：
++
+.. 仮想マシンイメージをダウンロードします。
+.. 仮想マシンを導入し、ネットワークインターフェイスを設定します。
+.. SSH を使用して Deploy ユーティリティにアクセスします。
+
+
+
+
+.関連情報
+link:task_install_deploy.html["ONTAP Select Deployのインストール"]
+
+
+
+[[step-3-restore-the-deploy-configuration-data-to-the-new-virtual-machine]]
+== ステップ3：Deploy構成データを新しい仮想マシンにリストアする
+
+元の Deploy ユーティリティ仮想マシンから新しい仮想マシンに構成データを復元する必要があります。データは単一のファイルに格納されているため、ローカルワークステーションからアップロードする必要があります。
+
+.開始する前に
+以前のバックアップから構成データを取得する必要があります。データは単一のファイルに格納されており、ローカルワークステーション上に存在している必要があります。
+
+.手順
+. ローカルワークステーションのコマンドシェルで、次の例に示すように、sftpユーティリティを使用してバックアップファイルをDeploy仮想マシンにアップロードします：
++
+....
+sftp admin@10.234.81.101 (provide password when prompted)
+put deploy_backup_20190601162151.tar.gz
+exit
+....
+. 管理者アカウントを使用して、SSH経由でデプロイユーティリティのCLIにサインインします。
+. 設定データを復元する：
++
+[source, cli]
+----
+deploy backup restore -path <path_name> -filename <file_name>
+----
++
+コマンド例：
+
++
+`deploy backup restore -path /home/admin -filename deploy_backup_20180601162151.tar.gz`
+
+

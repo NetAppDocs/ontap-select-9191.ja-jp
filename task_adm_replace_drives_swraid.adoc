@@ -1,0 +1,294 @@
+---
+sidebar: sidebar 
+permalink: task_adm_replace_drives_swraid.html 
+keywords: administer, administering, web, software raid, replace drive 
+summary: ソフトウェアRAIDを使用しているドライブに障害が発生した場合、ONTAP Selectはスペアドライブ（使用可能な場合）を使用し、再構築プロセスを自動的に開始します。これは、FASおよびAFF上のONTAPの動作と同様です。ただし、スペアドライブが使用できない場合は、ONTAP Selectノードにスペアドライブを追加する必要があります。 
+---
+= ONTAP Select の障害ソフトウェア RAID ドライブを交換
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ソフトウェアRAIDを使用しているドライブに障害が発生すると、ONTAP Selectはスペアドライブが使用可能な場合はそれを割り当て、リビルドプロセスを自動的に開始します。これは、FASおよびAFFでのONTAPの動作と同様です。ただし、スペアドライブが使用できない場合は、ONTAP Selectノードにスペアドライブを追加する必要があります。
+
+
+NOTE: 障害ドライブの取り外しと新しいドライブ（スペアとしてマーク）の追加は、どちらもONTAP Select Deployで実行する必要があります。vSphereを使用してONTAP Select VMにドライブを接続することはサポートされていません。
+
+
+
+[[identify-the-failed-drive]]
+== 障害ドライブを特定する
+
+ドライブに障害が発生した場合は、ONTAP CLIを使用して障害ドライブを特定する必要があります。
+
+[role="tabbed-block"]
+====
+.KVM
+--
+.開始する前に
+ONTAP Select 仮想マシンの VM ID 、および ONTAP Select と ONTAP Select Deploy の管理者アカウントのクレデンシャルが必要です。
+
+.タスク概要
+この手順は、ONTAP Select ノードが KVM 上で動作しており、ソフトウェア RAID を使用するように構成されている場合にのみ使用してください。
+
+.手順
+. ONTAP Select CLIで、交換するディスクを特定します。
++
+.. 仮想マシン内で、シリアル番号、UUID、またはターゲットアドレスによってディスクを識別します。
++
+[listing]
+----
+disk show -fields serial,vmdisk-target-address,uuid
+----
+.. オプションで、パーティション分割されたディスクを含むスペア ディスク容量の完全なリストを表示します。storage aggregate show-spare-disks
+
+
+. Linux のコマンドラインインターフェイスで、ディスクを特定します。
++
+.. システムデバイスを調べて、ディスクのシリアル番号またはUUID（ディスク名）を探します：
++
+[listing]
+----
+find /dev/disk/by-id/<SN|ID>
+----
+.. 仮想マシンの構成を調べ、ターゲットアドレスを検索します：
++
+[listing]
+----
+virsh dumpxml VMID
+----
+
+
+
+
+--
+.ESXi
+--
+.手順
+. 管理者アカウントを使用してONTAP CLIにサインインします。
+. 障害ドライブを特定してください。
++
+[listing]
+----
+<cluster name>::> storage disk show -container-type broken
+Usable Disk Container Container
+Disk Size Shelf Bay Type Type Name Owner
+---------------- ---------- ----- --- ------- ----------- --------- --------
+NET-1.4 893.3GB - - SSD broken - sti-rx2540-346a'
+----
+
+
+--
+====
+
+
+[[remove-the-failed-drive]]
+== 障害ドライブを取り外します
+
+障害ドライブを特定したら、そのディスクを取り外してください。
+
+[role="tabbed-block"]
+====
+.Deployを使用したKVM
+--
+ディスクを交換する際、またはディスクが不要になった場合、KVM ホストからディスクを取り外すことができます。
+
+.開始する前に
+ONTAP Select および ONTAP Select Deploy の管理者アカウントのクレデンシャルが必要です。
+
+.手順
+. 管理者アカウントを使用して、デプロイユーティリティのWebユーザーインターフェースにサインインしてください。
+. ページ上部の *Clusters* タブを選択し、リストから目的のクラスターを選択してください。
+. 目的のHAペアまたはノードの横にある*+*を選択します。
++
+このオプションが無効になっている場合、Deploy は現在ストレージ情報を更新中です。
+
+. *Edit Node Storage* ページで *Edit Storage* を選択します。
+. ノードから切り離すディスクの選択を解除し、ONTAP 管理者資格情報を入力し、*ストレージの編集*を選択して変更を適用します。
+. ポップアップウィンドウで警告を確認するには、*Yes* を選択します。
+. クラスタの *Events* タブを選択して、デタッチ処理を監視および確認します。
++
+不要になった場合は、ホストから物理ディスクを取り外すことができます。
+
+
+
+--
+.CLIを使用したKVM
+--
+ディスクを特定したら、以下の手順に従ってください。
+
+.手順
+. 仮想マシンからディスクを切り離します：
++
+.. 設定をダンプします。
++
+[listing]
+----
+virsh dumpxml VMNAME > /PATH/disk.xml
+----
+.. ファイルを編集し、仮想マシンから切り離すディスク以外のすべてを削除します。
++
+ディスクのターゲット アドレスは、ONTAP の vmdisk-target-address フィールドに対応している必要があります。
+
++
+[listing]
+----
+<disk type='block' device='lun'>
+  <driver name='qemu' type='raw' cache='directsync'/>
+  <source dev='/dev/disk/by-id/ata- Micron_5100_MTFDDAK960TCC_171616D35277'/>
+  <backingStore/>
+  <target dev='sde' bus='scsi'/>
+  <alias name='scsi0-0-0-4'/>
+  <address type='drive' controller='0' bus='0' target='0' unit='4'/>
+</disk>
+----
+.. ディスクを取り外します。
++
+[listing]
+----
+virsh detach-disk --persistent /PATH/disk.xml
+----
+
+
+. 物理ディスクを交換します。
++
+必要に応じて、 `ledctl locate=`などのユーティリティを使用して物理ディスクの位置を特定できます。
+
++
+.. ホストからディスクを取り外します。
+.. 新しいディスクを選択し、必要に応じてホストにインストールします。
+
+
+. 元のディスク構成ファイルを編集し、新しいディスクを追加します。
++
+必要に応じて、ディスク パスやその他の構成情報を更新してください。
+
++
+[listing]
+----
+<disk type='block' device='lun'>
+  <driver name='qemu' type='raw' cache='directsync'/>
+  <source dev='/dev/disk/by-id/ata-Micron_5100_MTFDDAK960TCC_171616D35277'/>
+  <backingStore/>
+  <target dev='sde' bus='scsi'/>
+  <alias name='scsi0-0-0-4'/>
+  <address type='drive' controller='0' bus='0' target='0' unit='4'/>
+</disk>
+----
+
+
+--
+.ESXi
+--
+.手順
+. 管理者アカウントを使用して、DeployのWebユーザーインターフェースにサインインしてください。
+. * Clusters * タブを選択し、該当するクラスターを選択します。
++
+image:ST_22.jpg["ノードの詳細"]
+
+. ストレージビューを展開するには、*+* を選択します。
++
+image:ST_23.jpg["ノード ストレージを編集"]
+
+. *Edit* を選択して接続されているディスクに変更を加え、障害ドライブのチェックを外します。
++
+image:ST_24.jpg["ストレージディスクの詳細"]
+
+. クラスターの認証情報を入力し、*ストレージの編集*を選択します。
++
+image:ST_25.jpg["ONTAP クレデンシャル"]
+
+. 操作を確認します。
++
+image:ST_26.jpg["警告"]
+
+
+
+--
+====
+
+
+[[add-the-new-spare-drive]]
+== 新しいスペア ディスクを追加する
+
+障害ドライブを取り外した後、スペア ディスクを追加します。
+
+[role="tabbed-block"]
+====
+.Deployを使用したKVM
+--
+.Deployを使用してディスクを接続する
+ディスクを交換する際や、ストレージ容量を増設する際に、KVMホストにディスクを接続することができます。
+
+.開始する前に
+ONTAP Select および ONTAP Select Deploy の管理者アカウントのクレデンシャルが必要です。
+
+新しいディスクは、KVM Linuxホストに物理的にインストールする必要があります。
+
+.手順
+. 管理者アカウントを使用して、デプロイユーティリティのWebユーザーインターフェースにサインインしてください。
+. ページ上部の *Clusters* タブを選択し、リストから目的のクラスターを選択してください。
+. 目的のHAペアまたはノードの横にある*+*を選択します。
++
+このオプションが無効になっている場合、Deploy は現在ストレージ情報を更新中です。
+
+. *Edit Node Storage* ページで *Edit Storage* を選択します。
+. ノードに接続するディスクを選択し、ONTAP 管理者のクレデンシャルを入力して、*ストレージの編集*を選択し、変更を適用します。
+. *Events* タブを選択して、アタッチ操作を監視および確認します。
+. ノードのストレージ構成を調べて、ディスクが接続されていることを確認してください。
+
+
+--
+.CLIを使用したKVM
+--
+障害ドライブを特定して取り外した後、新しいドライブを接続できます。
+
+.手順
+. 新しいディスクを仮想マシンに接続します。
++
+[listing]
+----
+virsh attach-disk --persistent /PATH/disk.xml
+----
+
+
+.結果
+ディスクはスペアとして割り当てられ、ONTAP Select で使用可能です。ディスクが使用可能になるまで1分以上かかる場合があります。
+
+.終了後の操作
+ノード構成が変更されたため、Deploy 管理ユーティリティを使用してクラスタの更新操作を実行する必要があります。
+
+--
+.ESXi
+--
+.手順
+. 管理者アカウントを使用して、DeployのWebユーザーインターフェースにサインインしてください。
+. * Clusters * タブを選択し、該当するクラスターを選択します。
++
+image:ST_27.jpg["HAペア"]
+
+. ストレージビューを展開するには、*+* を選択します。
++
+image:ST_28.jpg["ノード ストレージを編集"]
+
+. *Edit* を選択し、新しいドライブが利用可能であることを確認して選択します。
++
+image:ST_29.jpg["ストレージディスクの詳細"]
+
+. クラスターの認証情報を入力し、*ストレージの編集*を選択します。
++
+image:ST_30.jpg["ストレージディスクの詳細"]
+
+. 操作を確認します。
++
+image:ST_31.jpg["ストレージディスクの詳細"]
+
+
+
+--
+====

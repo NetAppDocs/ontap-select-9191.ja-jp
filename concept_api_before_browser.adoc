@@ -1,0 +1,42 @@
+---
+sidebar: sidebar 
+permalink: concept_api_before_browser.html 
+keywords: rest api, deploy rest api, rest, access browser, before you begin 
+summary: Deployのオンラインドキュメントページを使用する前に、いくつか注意すべき点があります。 
+---
+= ブラウザを使用した ONTAP Select Deploy API へのアクセスについて
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Deployのオンラインドキュメントページを使用する前に、いくつか注意すべき点があります。
+
+
+
+[[deployment-plan]]
+== 導入計画
+
+特定のデプロイメントや管理タスクを実行する際にAPI呼び出しを行う予定がある場合は、デプロイメントプランを作成することを検討してください。これらの計画は正式なものも非公式なものもあり、一般的には目標と使用するAPI呼び出しが含まれています。詳細については、Deploy REST APIを使用したワークフロープロセスを参照してください。
+
+
+
+[[json-examples-and-parameter-definitions]]
+== JSONの例とパラメータ定義
+
+各API呼び出しは、一貫した形式を用いてドキュメントページで説明されています。内容には、実装に関する注意事項、クエリパラメータ、HTTPステータスコードが含まれます。さらに、APIリクエストとレスポンスで使用されるJSONの詳細を以下のように表示できます：
+
+* 値の例 API 呼び出しで _値の例_ を選択すると、その呼び出しの典型的な JSON 構造が表示されます。必要に応じて例を修正し、リクエストの入力として使用できます。
+* Model _Model_を選択すると、JSONパラメータの完全なリストが表示され、各パラメータの説明が表示されます。
+
+
+
+
+[[caution-when-issuing-api-calls]]
+== API 呼び出しを行う際の注意点
+
+Deploy に関するドキュメント ページを使用して実行するすべての API 操作は、ライブ操作です。設定データやその他のデータを誤って作成、更新、または削除しないように注意してください。

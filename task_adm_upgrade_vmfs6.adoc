@@ -1,0 +1,50 @@
+---
+sidebar: sidebar 
+permalink: task_adm_upgrade_vmfs6.html 
+keywords: administer, administering, web, storage vmotion, upgrade vmfs6 
+summary: VMwareは、VMFS 5からVMFS 6へのインプレースアップグレードをサポートしていません。既存のONTAP SelectノードについてVMFS 5データストアからVMFS 6データストアに移行する場合は、Storage vMotionを使用できます。 
+---
+= Storage vMotionを使用したONTAP SelectノードのVMFS6へのアップグレード
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+VMwareは、VMFS 5からVMFS 6へのインプレースアップグレードをサポートしていません。既存のONTAP SelectノードについてVMFS 5データストアからVMFS 6データストアに移行する場合は、Storage vMotionを使用できます。
+
+ONTAP Select仮想マシンの場合、Storage vMotionはシングルノードクラスタとマルチノードクラスタの両方で使用できます。ストレージのみの移行だけでなく、コンピューティングとストレージの両方の移行にも使用できます。
+
+image:ST_10.jpg["マイグレート"]
+
+.開始する前に
+新しいホストがONTAP Selectノードをサポートできることを確認します。たとえば、元のホストでRAIDコントローラとDASストレージが使用されている場合、新しいホストにも同様の構成が存在する必要があります。
+
+
+CAUTION: ONTAP Select VMが不適切な環境に再ホストされると、深刻なパフォーマンスの問題が発生する可能性があります。
+
+.手順
+. ONTAP Select仮想マシンをシャットダウンします。
++
+ノードがHAペアの一部である場合は、まずストレージのフェイルオーバーを実行してください。
+
+. *CD/DVD ドライブ*オプションをクリアします。
++
+ONTAP Deploy を使用せずに ONTAP Select をインストールした場合、この手順は適用されません。
+
++
+image:ST_11.jpg["設定を編集"]
+
+. Storage vMotion処理が完了したら、ONTAP Select仮想マシンの電源をオンにします。
++
+このノードがHAペアの一部である場合、手動でギブバックを実行できます。
+
+. Deployユーティリティを使用して `cluster refresh`操作を実行し、成功したことを確認してください。
+. Deploy ユーティリティデータベースをバックアップします。
+
+
+.終了後の操作
+Storage vMotion処理が完了したら、Deployユーティリティを使用して `cluster refresh`処理を実行する必要があります。 `cluster refresh`により、ONTAP Deploy データベースが ONTAP Select ノードの新しい場所で更新されます。

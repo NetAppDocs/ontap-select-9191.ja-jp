@@ -1,0 +1,138 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_dep_general.html 
+keywords: plan, planning, ontap select deploy, general requirements 
+summary: ONTAP Select Deploy管理ユーティリティをインストールする計画の一環として考慮すべき一般的な要件がいくつかあります。 
+---
+= ONTAP Select Deployの一般的な要件と計画
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select Deploy管理ユーティリティをインストールする計画の一環として考慮すべき一般的な要件がいくつかあります。
+
+
+
+[[pairing-the-deploy-utility-with-the-ontap-select-clusters]]
+== DeployユーティリティとONTAP Selectクラスタのペアリング
+
+ONTAP SelectクラスタでDeployユーティリティのインスタンスをペアリングする際には、いくつかのオプションがあります。
+
+
+NOTE: すべての導入シナリオにおいて、単一のONTAP Selectクラスタとクラスタ内のノードは、Deploy管理ユーティリティの1つのインスタンスでのみ管理できます。クラスタを2つ以上の異なるDeployユーティリティのインスタンスで管理することはできません。
+
+.ONTAP Select クラスタごとに 1 つのユーティリティインスタンス
+専用のDeployユーティリティインスタンスを使用して、各ONTAP Selectクラスタを導入および管理できます。この1対1の構成では、ユーティリティとクラスタのペアリングが明確に分離されています。この構成では、障害ドメインを小さくすることで、高いレベルの分離を実現します。
+
+.複数の ONTAP Select クラスタに対応する 1 つのユーティリティインスタンス
+単一のDeployユーティリティインスタンスを使用して、組織内の複数のONTAP Selectクラスタを導入および管理できます。この1対多構成では、すべての処理データと構成データは、同じDeployユーティリティのインスタンスによって管理されます。
+
+
+NOTE: Deployユーティリティの1つのインスタンスで、最大400のONTAP Selectノードまたは100のクラスタを管理できます。
+
+
+
+[[requirements-related-to-the-kvm-environment]]
+== KVM環境に関する要件
+
+KVMハイパーバイザー環境にDeploy管理ユーティリティをインストールする前に、基本的な要件を確認し、導入の準備をする必要があります。
+
+.導入に関する要件と制限事項
+KVM環境にONTAP Select Deployユーティリティをインストールする際に考慮すべき要件と制限がいくつかあります。
+
+.Linux KVMホストサーバのハードウェア要件
+Linux KVMハイパーバイザーホストが満たす必要のある最小リソース要件がいくつかあります。ONTAP Selectを導入するホストが次の基本要件を満たしていることを確認してください：
+
+* Linuxサーバー：
++
+** ハードウェアとソフトウェアは64ビットである必要があります。
+** サーバーは、ONTAP Selectノードに定義されているサポート対象バージョンと同じバージョンに準拠する必要があります
+
+
+* 仮想CPU（2）
+* 仮想メモリ（4GB）
+* ストレージ（40GB）
+* 「Dynamic Host Configuration Protocol（DHCP）が有効になっています（静的IPアドレスを割り当てることもできます）」
+
+
+.ネットワーク接続
+Deploy仮想マシンのネットワークインターフェイスが設定されており、管理対象のONTAP Selectホストに接続できることを確認します。
+
+.IPバージョン4のサポート
+ONTAP Select DeployはIPバージョン4（IPv4）のみをサポートしています。IPバージョン6（IPv6）はサポートされていません。この制限は、ONTAP Selectに次のような影響を与えます：
+
+* Deploy VMの管理LIFにIPv4アドレスを割り当てる必要があります。
+* Deploy では、 ONTAP LIF で IPv6 を使用するように設定された ONTAP Select ノードを作成できません。
+
+
+
+
+[[required-configuration-information]]
+== 必要な構成情報
+
+展開計画の一環として、ONTAP Select Deploy管理ユーティリティをインストールする前に、必要な構成情報を決定する必要があります。
+
+.Deploy VMの名前
+VMに使用する名前。
+
+.Linux KVMホストの名前
+Deploy ユーティリティがインストールされている Linux KVM ホスト。
+
+.ストレージプールの名前
+VMファイルを格納するストレージプール（約40GBが必要）。
+
+.VM のネットワーク
+Deploy VMが接続されているネットワーク。
+
+
+
+[[optional-network-configuration-information]]
+== オプションのネットワーク構成情報
+
+デプロイ用VMは、デフォルトではDHCPを使用して構成されます。ただし、必要に応じて、VMのネットワークインターフェースを手動で設定することもできます。
+
+.Host name
+ホストの名前。
+
+.ホストのIPアドレス
+静的 IPv4 アドレス。
+
+.サブネット マスク
+VMが属するネットワークに基づくサブネットワークマスク。
+
+.ゲートウェイ
+デフォルトゲートウェイまたはルータ。
+
+.プライマリ DNS サーバー
+プライマリドメインネームサーバ。
+
+.セカンダリDNSサーバー
+セカンダリドメインネームサーバ。
+
+.検索ドメイン
+使用する検索ドメイン。
+
+
+
+[[authentication-using-the-credential-store]]
+== 認証情報ストアを使用した認証
+
+ONTAP Select Deploy クレデンシャルストアは、アカウント情報を保持するデータベースです。Deployは、クラスタの作成および管理の一環として、アカウント認証情報を使用してホスト認証を実行します。ONTAP Selectの展開を計画する一環として、認証情報ストアがどのように使用されるかを認識しておく必要があります。
+
+
+NOTE: アカウント情報は、AES暗号化アルゴリズムとSHA-256ハッシュアルゴリズムを使用して、データベースに安全に保管されます。
+
+.クレデンシャルのタイプ
+以下の種類のクレデンシャルがサポートされています：
+
+* *ホスト*：VMware ESXi にONTAP Select ノードを直接デプロイする際に、ハイパーバイザーホストを認証するために使用されます
+* *vCenter*: ホストが VMware vCenter によって管理されている場合に、ONTAP Select ノードを ESXi にデプロイする一環として vCenter サーバーを認証するために使用されます
+
+
+.アクセス
+資格情報ストアは、Deploy を使用して通常の管理タスク（ハイパーバイザーホストの追加など）を実行する際に内部的にアクセスされます。認証情報ストアは、Deploy の Web ユーザーインターフェースおよび CLI から直接管理することもできます。

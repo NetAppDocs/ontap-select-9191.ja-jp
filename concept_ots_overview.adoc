@@ -1,0 +1,166 @@
+---
+sidebar: sidebar 
+permalink: concept_ots_overview.html 
+keywords: overview, software defined storage, sds, typical deployment, ontap 9 
+summary: ONTAP Selectは、ハイパーバイザーホスト上に仮想マシンとしてデプロイするソフトウェアのみのバージョンのONTAPです。主流のFASおよびAFF ONTAP製品群や、Cloud Volumes ONTAPなどの他のソフトウェアのみのオプションを補完します。 
+---
+= ONTAP Selectについて学ぶ
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectは、ハイパーバイザーホスト上の仮想マシンとしてデプロイできる、ソフトウェアのみのバージョンのONTAPです。主流のAFFおよびFAS ONTAP製品群や、Cloud Volumes ONTAPなどの他のソフトウェアのみのオプションを補完します。
+
+ONTAP Selectは、内蔵ディスクドライブ、NVMe、SSD、HDD、および外部アレイストレージを、専用ONTAPストレージシステムと同様の多くの利点を備えた柔軟なストレージシステムに変換します。ONTAP Selectは、新しいサーバーまたは既存のサーバーインフラストラクチャに導入することもできます。ONTAP Selectは管理が容易で、ONTAPベースのソリューションと同じ管理ソフトウェアを活用するため、運用コストと研修要件が削減されます。
+
+ONTAP Selectは、容量ティアと完全に柔軟な容量プールという2つの補完的なライセンスモデルにより、お客様の容量消費ニーズに対応します。どちらのライセンスモデルでも、容量を最小1TB単位で増やすことができます。例えば、最初は数テラバイトの容量から始めて、プロジェクトの規模拡大に合わせて動的に容量を追加していくことができます。容量プールを使用している場合、プロジェクト完了後に必要に応じて容量を再配分できます。
+
+ONTAP SelectはVMwarevSphereやKernel-based Virtual Machine（KVM）などのクラウド管理フレームワークに統合されています。これにより、ファイルサービス、ホームディレクトリ、ソフトウェア開発環境、アプリケーションテストなどの新規プロジェクトの展開を加速できます。
+
+SnapMirrorソフトウェアを使用すると、ハイブリッドクラウド全体でONTAPストレージ間でデータを移動できるため、必要な場所で簡単にデータにアクセスできます。たとえば、アイデアを検証するための環境を素早く構築できます。その後、プロジェクトを専用のストレージプラットフォームに移動して本番環境にデプロイしたり、開発ワークフローの一環としてクラウドでよりアクセスしやすくしたりできます。
+
+
+
+[[software-defined-storage]]
+== ソフトウェアで定義されるストレージ
+
+ソフトウェアを介したITサービスの導入と提供により、管理者は従来不可能だったスピードと俊敏性でリソースを迅速にプロビジョニングできるようになる。現代のデータセンターがソフトウェアで定義されるインフラストラクチャ（SDI）アーキテクチャに移行することで、最も価値の高いIT資産を基盤となる物理インフラストラクチャから分離し、柔軟性、拡張性、プログラマビリティを実現できます。
+
+データが直接接続ストレージ（DAS）のサイロに分散しているコモディティ化された世界では、データへのアクセスと管理はより複雑な問題となっています。ソフトウェア定義ストレージ（SDS）は、これらの問題やその他の問題に対処するために、SDI環境において重要な要素として登場しました。
+
+ONTAP Selectは、NetAppのSDS市場向けソリューションです。ONTAP Selectは、エンタープライズクラスのストレージ管理機能をソフトウェアで定義されるデータセンターにもたらし、NetApp Data Fabricアーキテクチャをモノのインターネット（IoT）や戦術サーバーなどの最先端のユースケースにまで拡張します。
+
+
+
+[[two-software-components]]
+== 2つのソフトウェアコンポーネント
+
+ONTAP Selectは、主に2つのソフトウェアコンポーネントで構成されています。
+
+
+
+[[ontap-select-node]]
+=== ONTAP Selectノード
+
+ONTAP Selectクラスタは、1、2、4、6、8、10、または12個のノードで構成されます。各クラスタノードは個別の仮想マシンとしてデプロイされ、特別に設計されたバージョンのONTAP 9ソフトウェアを実行します。
+
+
+
+[[ontap-select-deploy-administration-utility]]
+=== ONTAP Select Deploy管理ユーティリティ
+
+Deploy管理ユーティリティは、独立したLinux仮想マシンとしてパッケージ化され、インストールされます。本番環境でONTAP Selectクラスタを導入するには、このユーティリティを使用する必要があります。現在のバージョンのONTAP Selectノードイメージは、Deployユーティリティにバンドルされています。
+
+
+NOTE: Deploy管理ユーティリティには、個別のバージョン番号は割り当てられていません。Deployは、関連付けられているONTAP Selectリリースと同じバージョン番号を持ちます。ただし、特定のONTAP Selectリリース内のDeployユーティリティの各アップデートには固有のビルド番号があります。
+
+
+
+[[illustration-of-a-typical-deployment]]
+== 一般的な導入環境の図
+
+次の図は、4ノードONTAP Selectクラスタの導入とサポートに使用されるNetApp ONTAP Select Deploy管理ユーティリティを示しています。DeployユーティリティとONTAP Selectノードは、専用のハイパーバイザーホスト上で個別の仮想マシンとして実行されます。
+
+image:ots_architecture.png["Deploy管理ユーティリティを使用して作成されたONTAP Select 4ノードクラスタを示しています。"]
+
+
+
+[[flexcache-write-back-with-ontap-select]]
+== FlexCache による ONTAP Select への書き戻し
+
+ONTAP Selectは、ライトバック機能付きのFlexCacheキャッシュボリュームをサポートしています。ONTAP Selectインスタンス全体のパフォーマンスは、エントリーレベルのONTAPシステムに匹敵します。
+
+FlexCache ライトバック機能付きキャッシュボリュームには、ONTAP Select で次の要件があります：
+
+* 中規模（8コア）または大規模（16コア）インスタンスでONTAP Selectを使用します。
+* NVMe対応のソリッドステートドライブを使用してください。SASベースのストレージは、ONTAP SelectのNVMeベースのストレージと比較してパフォーマンスが低くなります。
+* デプロイを開始する前に、FlexCache ライトバック用の ONTAP Select をテストしてください。FlexCache ライトバックは、多数の小さなファイルには推奨されません。
+
+
+ONTAP Selectは、小規模インスタンス（4コア）上でライトバック機能を備えたFlexCacheキャッシュボリュームをサポートしていません。さらに、ONTAP Selectは、小規模、中規模、大規模インスタンスにおいて、ライトバック機能を備えたFlexCacheオリジンボリュームをサポートしていません。
+
+link:https://docs.netapp.com/us-en/ontap/flexcache-writeback/flexcache-write-back-guidelines.html["ONTAP FlexCacheライトバックについて学ぶ"^]
+
+
+
+[[compare-ontap-select-and-ontap-9]]
+== ONTAP SelectとONTAP 9の比較
+
+ハードウェアベースONTAPとONTAP Selectは、どちらもエンタープライズクラスのストレージソリューションを提供します。しかし、設計や実装方法が異なるため、それぞれ異なるビジネス要件や利用シナリオに対応できます。ONTAP Select導入を計画する前に、プラットフォーム間の主な違いをよく理解しておく必要があります。
+
+
+
+[[different-ha-architecture]]
+=== 異なるHAアーキテクチャ
+
+クラスターで定義するノードの数に応じて、ONTAP SelectはHA（高可用性）機能を提供します。たとえば、4ノードクラスタは2つのHAペアで構成されます。ONTAP Selectで使用されるHAアーキテクチャは、非共有ストレージモデルに基づいています。つまり、HAペアを構成するノードのうち、一方のノードは他方のノードが所有するストレージに直接アクセスすることはできません。この設計は、特定のONTAP Selectの動作特性に影響を与える可能性があります。
+
+
+
+[[capacity-licensing]]
+=== 容量ライセンス
+
+ONTAP Selectは消費ベースのライセンス モデルを導入しています。本番環境でONTAP Selectクラスタを導入する場合は、ノードまたは共有容量プールごとにストレージ容量のライセンスを購入する必要があります。Deployユーティリティを使用して、クラスタノードのストレージ容量を設定するライセンスファイルを適用する必要があります。
+
+
+
+[[ontap-feature-licensing]]
+=== ONTAP機能ライセンス
+
+ONTAP Selectクラスタの各ノードには、複数のONTAP機能を使用するためのライセンスが自動的に付与されます。これらの機能ライセンスを手動でインストールまたは適用する必要はありません。
+
+
+
+[[ontap-features-not-supported-in-ontap-select]]
+=== ONTAP Selectでサポートされていないオンタップの機能
+
+ONTAP Select では、いくつかの ONTAP 機能がサポートされていません。ほとんどの場合、これらの機能には、仮想化された ONTAP Select 環境では利用できない特別なハードウェアが必要です。
+
+* Autonomous Ransomware Protection（ARP）の自動更新
++
+
+NOTE: ONTAP Select 9.16.1以降、ARPの手動更新がサポートされ、ARP機能ライセンスがNetAppライセンスファイル（NLF）に含まれています。
+
+* クラウドキーマネージャー
+* クラスタ IP スペース
++
+クラスタIPスペースへの変更（ポートの追加や削除、仮想LAN（VLAN）、リンクアグリゲーショングループの追加や削除など）はサポートされていません。
+
+* 非同期 SnapMirror の整合グループ
+* Fibre Channel
++
+Fibre Channel および Fibre Channel over Ethernet はサポートされていません。
+
+* ヘルスモニター
++
+ハードウェアベースのONTAP導入で使用される従来のヘルスモニタリングは、基盤となるハードウェアコンポーネントに固有のものです。ONTAP Selectで使用される仮想化環境では、ヘルスモニターはアクティブではありません。
+
+* インターフェイス グループ
++
+インターフェースグループはサポートされていません。
+
+* NICオフロードのサポート
++
+ONTAP Selectで使用される仮想化環境のため、NICオフロード機能はサポートされていません。
+
+* NetAppストレージ暗号化ドライブ
+* ONTAPポートのプロパティ
++
+速度、デュプレックス、フロー制御などのONTAPポートのプロパティの変更はサポートされていません。
+
+* サービスプロセッサ
+* SVM-Migrate
+* SnapLock Compliance
+* SnapMirrorアクティブ同期
+* VMware HCX
+
+
+.関連情報
+* link:reference_lic_ontap_features.html#licensed-ontap-features["デフォルトでライセンスされるONTAP機能について学ぶ"]
+* link:concept_lic_evaluation.html["ONTAP Selectライセンスオプションについて学ぶ"]
+

@@ -1,0 +1,72 @@
+---
+sidebar: sidebar 
+permalink: reference_chk_select_req_info.html 
+keywords: ontap select, pre-installation, vmware 
+summary: VMware 環境で ONTAP Select クラスタを導入する準備の一環として、 ONTAP Select Deploy 管理ユーティリティを使用してクラスタを導入および設定する際に必要な情報を収集します。 
+---
+= ONTAP Select インストールに必要な情報
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+VMware 環境で ONTAP Select クラスタを導入する準備の一環として、 ONTAP Select Deploy 管理ユーティリティを使用してクラスタを導入および設定する際に必要な情報を収集します。
+
+収集する情報の中には、クラスタ自体に関するものもあれば、クラスタ内の個々のノードに関するものもあります。
+
+
+
+[[cluster-level-information]]
+== クラスタレベルの情報
+
+ONTAP Select クラスタに関連する情報を収集する必要があります。
+
+[cols="35,65"]
+|===
+| クラスタ情報 | 説明 
+
+
+| クラスタの名前 | クラスタの一意の識別子。 
+
+
+| ライセンスモード | 評価版またはライセンス購入版。 
+
+
+| クラスタのIP設定 | クラスタとノードのIP設定。次の情報が含まれます：* クラスタの管理IPアドレス * サブネットマスク * デフォルトゲートウェイ 
+|===
+
+
+[[host-level-information]]
+== ホストレベルの情報
+
+ONTAP Select クラスタ内の各ノードに関連する情報を収集する必要があります。
+
+[cols="35,65"]
+|===
+| クラスタ情報 | 説明 
+
+
+| ホスト名 | ホストの一意の識別子。 
+
+
+| ホストのドメイン名 | ホストの完全修飾ドメイン名。 
+
+
+| ノードの IP 設定 | クラスタ内の各ノードの管理用IPアドレス。 
+
+
+| ミラーノード | HAペアにおける関連ノードの名前（マルチノードクラスタのみ）。 
+
+
+| ストレージ プール | 使用されるストレージプールの名前。 
+
+
+| ストレージディスク | ソフトウェアRAIDを使用する場合のディスクのリスト。 
+
+
+| シリアル番号 | 購入したライセンスでデプロイする場合は、NetApp から提供された一意の 9 桁のシリアル番号。 
+|===

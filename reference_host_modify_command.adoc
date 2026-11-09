@@ -1,0 +1,82 @@
+---
+sidebar: sidebar 
+permalink: reference_host_modify_command.html 
+keywords: host modify, command, syntax, host management server 
+summary: host modify コマンドを使用すると、この ONTAP Select Deploy インスタンスでホスト管理サーバーを変更できます。 
+---
+= ONTAP Select Deploy のホスト管理サーバーを変更する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ `host modify`コマンドを使用すると、このONTAP Select Deployインスタンスでホスト管理サーバーを変更できます。
+
+
+
+[[syntax]]
+== 構文
+
+`host modify [-help] [-foreground] -name _name_ -mgmt-server _management_server_ [-username _username_]`
+
+
+
+[[required-parameters]]
+== 必須パラメータ
+
+[cols="35,65"]
+|===
+
+
+| パラメータ | 説明 
+
+
+ a| 
+`-name _name_`
+ a| 
+変更するホストのIPアドレスまたはFQDN。
+
+
+
+ a| 
+`-mgmt-server _management_server_`
+ a| 
+ホストに設定するホスト管理サーバーのIPアドレスまたはFQDN。ホストから管理サーバーの設定を解除するには、「-」（ハイフン）を指定します。この管理サーバーのクレデンシャルは、 `credential add`コマンドを使用してこのホストを登録する前に追加する必要があります。
+
+|===
+
+
+[[optional-parameters]]
+== オプションのパラメータ
+
+[cols="35,65"]
+|===
+
+
+| パラメータ | 説明 
+
+
+ a| 
+`-help`
+ a| 
+ヘルプメッセージを表示します。
+
+
+
+ a| 
+`-foreground`
+ a| 
+このパラメータは、長時間実行されるコマンドの動作を制御します。設定されている場合、コマンドはフォアグラウンドで実行され、操作に関連するイベントメッセージは発生次第表示されます。
+
+
+
+ a| 
+`-username _username_`
+ a| 
+このホストにアクセスできるユーザー名。これは、ホストが管理サーバーによって管理されていない場合（つまり、vCenterによって管理されているESXiホスト）にのみ必要です。
+
+|===

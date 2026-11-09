@@ -1,0 +1,64 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_vnas.html 
+keywords: plan, planning, vnas, vmware esxi, external storage 
+summary: VMware ESXiの使用に関連して、考慮すべき計画上の問題がいくつかあります。 
+---
+= ONTAP SelectのVMware ESXi外部ストレージ要件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select vNASは、ONTAP Select仮想マシンが実行されるESXiハイパーバイザーホストの外部にONTAP Selectデータストアを配置できるソリューションです。これらのリモートデータストアには、VMware vSANまたは汎用外部ストレージアレイを介してアクセスできます。
+
+
+
+[[basic-requirements-and-restrictions]]
+== 基本的な要件と制限
+
+ONTAP Select vNASソリューションは、あらゆる規模のONTAP Selectクラスタで使用できます。
+
+ハードウェア、ソフトウェア、機能要件を含む、関連するすべてのストレージコンポーネントは、link:https://mysupport.netapp.com/matrix/["Interoperability Matrix Tool"^]に記載されている要件に準拠する必要があります。さらに、ONTAP SelectはVMware Storage/SAN互換性に関するドキュメントに記載されているすべての外部ストレージアレイ（iSCSI、NAS（NFSv3）、ファイバチャネル、Fibre Channel over Ethernetなど）をサポートします。外部アレイのサポートは、ONTAP Selectでサポートされている ESXi バージョンによって制限されます。
+
+ONTAP Select vNASでクラスタを導入する場合、次のVMware機能がサポートされます。
+
+* VMotion
+* 高可用性（HA）
+* Distributed Resource Scheduler（DRS）
+
+
+
+NOTE: これらのVMware機能は、シングルノードおよびマルチノードのONTAP Selectクラスタでサポートされています。マルチノードクラスタをデプロイする場合は、同じクラスタの2つ以上のノードが同じハイパーバイザーホスト上で実行されないようにする必要があります。
+
+VMwareの次の機能はサポートされません。
+
+* フォールトトレランス（FT）
+* 仮想データストア（VVOL）
+
+
+
+
+[[configuration-requirements]]
+== 設定要件
+
+外部ストレージアレイ（iSCSI、ファイバーチャネル、イーサネット経由のファイバーチャネル）でVMFSデータストアを使用する場合は、ONTAP Selectでストレージを使用するように設定する前に、VMFSストレージプールを作成する必要があります。NFSデータストアを使用する場合は、別途VMFSデータストアを作成する必要はありません。すべてのvSANデータストアは、同一のESXiクラスタ内に定義する必要があります。
+
+
+CAUTION: VMware vSAN上のすべてのデータストアまたは外部ストレージアレイに対して、ホストの構成時やストレージ追加操作実行時に容量制限を指定する必要があります。指定する容量は、外部ストレージの許容ストレージ制限の範囲内である必要があります。容量制限を指定しない場合、またはディスク作成操作中に外部ストレージの空き容量が不足した場合、エラーが発生します。
+
+
+
+[[best-practices]]
+== ベストプラクティス
+
+VMware のドキュメントを確認し、 ESXi ホストに該当するベストプラクティスに従ってください。さらに（：）
+
+* ONTAP Selectネットワークおよび外部ストレージ（iSCSIまたはNFS使用時のVMware vSANおよび汎用ストレージアレイのトラフィック）用の専用ネットワークポート、帯域幅、およびvSwitch構成を定義します
+* ストレージ使用量を制限するには、容量オプションを設定します（ONTAP Selectは外部vNASデータストアの全容量を消費することはできません）
+* すべての汎用外部ストレージアレイが、可能な限り利用可能な冗長性とHA機能を使用していることを確認します
+

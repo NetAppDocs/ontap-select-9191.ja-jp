@@ -1,0 +1,98 @@
+---
+sidebar: sidebar 
+permalink: reference_lic_ontap_features.html 
+keywords: license, licensing, ontap features, default ontap features 
+summary: ONTAP Selectは、ほとんどのONTAP機能を完全にサポートしています。クラスタを導入すると、多くのONTAP機能のライセンスが各ノードに対して自動的に付与されます。ただし、一部の機能には別途ライセンスが必要です。 
+---
+= ONTAP Select による ONTAP 機能のサポート
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectは、ほとんどのONTAP機能をサポートしています。クラスタを導入すると、多くのONTAP機能のライセンスが各ノードに対して自動的に付与されます。ただし、一部の機能には別途ライセンスが必要です。
+
+
+NOTE: ハードウェア固有の依存関係を持つONTAP機能は、一般的にONTAP Selectではサポートされていません。
+
+
+
+[[ontap-features-licensed-by-default]]
+[[licensed-ontap-features]]
+== デフォルトでライセンスされるONTAP機能
+
+次のONTAP機能はONTAP Selectでサポートされており、デフォルトでライセンスが付与されます：
+
+* 自律型ランサムウェア対策（ARP）（手動更新）
+* CIFS
+* 重複排除と圧縮
+* Key Management Interoperability Protocol（KMIP）を使用した外部キー管理
++
+link:https://docs.netapp.com/us-en/ontap/encryption-at-rest/configure-netapp-volume-encryption-concept.html["外部キー管理の有効化と設定"^]について学ぶ。
+
+* FlexCache
++
+ONTAP Selectは、ライトバック機能付きのFlexCacheキャッシュボリュームをサポートしています。ライトバック機能を持つFlexCacheオリジンボリュームはサポートされていません。
+
++
+link:concept_ots_overview.html#flexcache-write-back-with-ontap-select["ONTAP SelectでのFlexCacheライトバックの詳細"]
+
+* FlexClone
+* iSCSI
+* NDMP
+* NetApp Volume Encryption（制限対象外の国のみ）
+* NFS
+* NVMe over TCP
+* ONTAPマルチテナンシー機能
+* ONTAP S3
+* S3 SnapMirror
+* SnapLock Select
++
+SnapLock SelectはONTAP Select向けに設計されたONTAP SnapLockの実装であり、SnapLock Enterpriseが含まれています。SnapLock Complianceは含まれていません。
+
++
+link:https://docs.netapp.com/us-en/ontap/snaplock/index.html["ONTAP SnapLock"^]について学ぶ
+
+* SnapMirror
++
+ONTAP Selectは、非同期 SnapMirrorにおけるコンシステンシー グループをサポートしていません。
+
+* SnapRestore
+* SnapVault
+* Storage VM ディザスタリカバリ（SVM DR）
++
+ONTAP SelectはSVM DRをソースと宛先の両方としてサポートし、最大16件の関係を設定できます。SVM DRのサポートは、ソースONTAPバージョンからバージョン+2までの使用に限定されます。たとえば、ONTAP Select 9.16.1ソースは、宛先ONTAPバージョン9.16.1、9.17.1、または9.18.1に接続できます。
+
+
+
+
+
+[[ontap-features-that-are-separately-licensed]]
+[[other-ontap-features]]
+== 別途ライセンスが必要な ONTAP 機能
+
+デフォルトではライセンスされていないONTAP機能については、別途ライセンスを取得する必要があります。これには次のものが含まれます：
+
+* FabricPool
++
+
+NOTE: StorageGRID を使用する場合、FabricPool ライセンスは必要ありません。
+
+* MetroCluster SDS（ONTAP Select プレミアムライセンスの提供）
+* SnapMirrorクラウド
++
+link:https://mysupport.netapp.com/site/help["非技術的なサポートケースを開く"^]してSnapMirrorクラウドライセンスを取得する必要があります。
+
++
+link:https://docs.netapp.com/us-en/ontap/concepts/snapmirror-cloud-backups-object-store-concept.html["オブジェクト ストレージへのSnapMirrorクラウドのバックアップ"^]について学ぶ
+
+
+
+.関連情報
+* link:concept_ots_overview.html#compare-ontap-select-and-ontap-9["ONTAP SelectとONTAP 9の比較"]
+* link:https://mysupport.netapp.com/site/systems/master-license-keys["NetApp ONTAP マスター ライセンス キーについて学ぶ"^]
+

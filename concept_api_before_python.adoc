@@ -1,0 +1,30 @@
+---
+sidebar: sidebar 
+permalink: concept_api_before_python.html 
+keywords: rest api, deploy rest api, rest, python, before you begin 
+summary: サンプルPythonスクリプトを実行する前に、環境を準備する必要があります。 
+---
+= Python を使用した ONTAP Select Deploy API へのアクセスについて
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+サンプルPythonスクリプトを実行する前に、環境を準備する必要があります。
+
+Pythonスクリプトを実行する前に、環境が正しく設定されていることを確認する必要があります：
+
+* 最新バージョンのPython2をインストールする必要があります。サンプルコードはPython2を使用してテスト済みです。これらはPython3にも移植可能であるはずですが、互換性テストは実施されていません。
+* Requests ライブラリと urllib3 ライブラリをインストールする必要があります。環境に応じて、pip またはその他の Python 管理ツールを使用できます。
+* スクリプトが実行されるクライアント ワークステーションには、ONTAP Select Deploy 仮想マシンへのネットワーク アクセスが必要です。
+
+
+さらに、以下の情報が必要です：
+
+* Deploy仮想マシンのIPアドレス
+* Deploy管理者アカウントのユーザー名とパスワード
+

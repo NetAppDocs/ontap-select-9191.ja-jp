@@ -1,0 +1,41 @@
+---
+sidebar: sidebar 
+permalink: concept_api_how_access.html 
+keywords: rest api, deploy rest api, rest, access, accessing, how to access 
+summary: REST Web サービスの本来の柔軟性により、ONTAP Select Deploy API には、いくつかの異なる方法でアクセスできます。 
+---
+= ONTAP Select Deploy APIへのアクセスについて
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+REST Web サービスの本来の柔軟性により、ONTAP Select Deploy API には、いくつかの異なる方法でアクセスできます。
+
+
+NOTE: ONTAP Select Deploy に付属の REST API にはバージョン番号が割り当てられます。API のバージョン番号は、Deploy のリリース番号とは無関係です。ONTAP Select 9.19.1 Deploy 管理ユーティリティには、バージョン 3 の REST API が含まれています。
+
+
+
+[[deploy-utility-native-user-interface]]
+== ユーティリティネイティブユーザーインターフェイスを導入する
+
+APIにアクセスする主な方法は、ONTAP Select Deploy Webユーザーインターフェイスからアクセスすることです。ブラウザはAPIを呼び出し、ユーザーインターフェースのデザインに合わせてデータを再フォーマットします。DeployユーティリティのコマンドラインインターフェースからもAPIにアクセスできます。
+
+
+
+[[ontap-select-deploy-online-documentation-page]]
+== ONTAP Select Deploy オンライン ドキュメント ページ
+
+ONTAP Select Deploy オンライン ドキュメント ページは、ブラウザを使用する際に代替のアクセス ポイントを提供します。このページでは、個々の API 呼び出しを直接実行する方法を提供するだけでなく、各呼び出しの入力パラメータやその他のオプションを含む、API の詳細な説明も掲載しています。API 呼び出しは、いくつかの異なる機能領域またはカテゴリに分類されています。
+
+
+
+[[custom-program]]
+== カスタムプログラム
+
+Deploy APIには、さまざまなプログラミング言語やツールを使用してアクセスできます。人気のある選択肢としては、Python、Java、cURLなどが挙げられます。APIを使用するプログラム、スクリプト、またはツールは、REST Webサービスクライアントとして機能します。プログラミング言語を使用することで、APIをよりよく理解でき、ONTAP Selectデプロイメントを自動化する機会が得られます。

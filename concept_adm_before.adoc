@@ -1,0 +1,80 @@
+---
+sidebar: sidebar 
+permalink: concept_adm_before.html 
+keywords: administer, administering, web, before you begin 
+summary: ONTAP Select クラスタの作成後、さまざまな管理タスクを実行することで導入をサポートできます。留意すべき一般的な事項がいくつかあります。 
+---
+= ONTAP Select の管理について学ぶ
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select クラスタの作成後、さまざまな管理タスクを実行することで導入をサポートできます。留意すべき一般的な事項がいくつかあります。
+
+一般的に、Deploy Web インターフェイスを使用して実行できる手順は、次の 3 つのカテゴリのいずれかに分類されます。
+
+.ONTAP Select クラスタを導入する
+シングルノードまたはマルチノードのクラスタをデプロイできます。詳細については、link:task_deploy_cluster.html["ONTAP Select クラスタを導入する"]を参照してください。
+
+.既存の ONTAP Select クラスタで手順を実行する
+管理手順は、_Security_や_Clusters_など、さまざまなカテゴリに分類されています。
+
+.Deploy ユーティリティで手順を実行します。
+Deployには、管理者のパスワードの変更など、いくつかの固有の手順があります。
+
+
+
+[[administer-ontap-select]]
+== ONTAP Select を管理する
+
+ONTAP Select をサポートする一環として、さまざまな管理手順を利用できます。さらに、Deploy 管理ユーティリティに固有の手順もあります。これらの手順の中で最も重要なものを以下に示します。一般に、すべて Deploy Web ユーザ インターフェイスを使用します。
+
+
+NOTE: また、link:https://docs.netapp.com/us-en/ontap-select/task_cli_signing_in.html["コマンドラインインターフェイスを使用する"]を使用してONTAP Selectを管理することもできます。
+
+
+
+[[perform-additional-ontap-configuration]]
+== 追加のONTAP設定を実行
+
+ONTAP Select クラスタの導入後は、ハードウェアベースの ONTAP システムと同様にクラスタを設定および管理できます。たとえば、ONTAP System Manager または ONTAP CLI を使用して ONTAP Select クラスタを設定できます。
+
+.NetAppクライアント ソフトウェア
+サポート対象である次のNetAppクライアント ソフトウェアを使用してONTAP Selectに接続できます。
+
+* ONTAP System Manager
+* Active IQ Unified Manager
+* OnCommand Insight
+* OnCommand Workflow Automation
+* SnapCenter
+* Virtual Storage Console for VMware vSphere
+
+
+サポートされているクライアント ソフトウェアのバージョンを確認するには、link:https://mysupport.netapp.com/matrix/["Interoperability Matrix Tool"^]を参照してください。クライアント ソフトウェアが ONTAP 9 をサポートしている場合、同じバージョンは ONTAP Select でもサポートされています。
+
+
+NOTE: SnapCenterおよび対応するプラグインを使用するには、サーバーベースのライセンスが必要です。ONTAP Selectでは、現在、SnapCenterプラグインのストレージ システム ライセンスはサポートされていません。
+
+リストに含まれていないその他のNetAppクライアント ソフトウェアは、ONTAP Selectではサポートされません。
+
+.設定可能なオプション
+クラスタの設定時には、次のようないくつかのオプションを使用できます。
+
+* ネットワーク構成の作成
+* アグリゲートのレイアウト
+* データストレージ VM （ SVM ）の作成
+
+
+.ストレージ容量付きの購入済みライセンス
+ONTAP Select クラスタの導入の一環としてストレージ容量を含むライセンスファイルをインストールしないことにした場合は、購入したライセンスで実行されているクラスタの猶予期間が終了する前に、ライセンスファイルを取得してインストールする必要があります。
+
+.ミラーアグリゲート
+Deploy管理ユーティリティは、使用可能なデータストア領域（Pool0やPool1など）から各ONTAP Selectノードにデータ予備ディスクを作成します。マルチノードクラスタ上でデータの高可用性を実現するには、これらの予備ディスクを使用してミラーリングされたアグリゲートを作成する必要があります。
+
+
+NOTE: ハイアベイラビリティテイクオーバーは、データアグリゲートがミラーアグリゲートとして設定されている場合にのみサポートされます。

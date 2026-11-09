@@ -1,0 +1,87 @@
+---
+sidebar: sidebar 
+permalink: concept_ots_deploy.html 
+keywords: ontap select deploy, deploy administration utility, deploy utility, functionality, accessing 
+summary: ONTAP Select Deployは、ONTAP Select クラスターのデプロイと管理に使用される管理ユーティリティです。 
+---
+= ONTAP Select Deploy について
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select Deployは、ONTAP Select クラスターのデプロイと管理に使用される管理ユーティリティです。Deploy は Linux 仮想マシンとしてパッケージ化されており、ONTAP Select クラスターを作成する前にインストールする必要があります。
+
+
+
+[[core-functionality]]
+== コア機能
+
+Deploy管理ユーティリティは、以下の主要機能を実行します：
+
+* ONTAP Selectが導入されている各ハイパーバイザーホストの詳細を記録します
+* ホストを設定し、必要なライセンスをインストールします。
+* ONTAP Selectクラスタを導入および管理
+* ONTAP Selectクラスタとホストのインベントリを管理
+* AutoSupportデータを収集してNetAppに送信する
+* ONTAP Select ノードイメージの内部セットを維持する
+* ハイパーバイザー固有のコマンド形式とプロトコルをサポートする
+
+
+
+
+[[ways-you-can-access-the-deploy-utility]]
+== Deployユーティリティにアクセスする方法
+
+Deploy管理ユーティリティにアクセスする際には、いくつかのオプションが利用可能です。すべての外部インターフェイスは機能的に同等です。特定の導入目標と要件に最も適したアクセスオプションを選択してください。いずれの場合も、有効なパスワードを使用して管理者アカウントでサインインする必要があります。
+
+
+
+[[web-graphical-user-interface]]
+=== Web グラフィカルユーザーインターフェース
+
+Deployユーティリティには、最新のWebブラウザからアクセスできます。Web UIは直感的で使いやすいインターフェイスを提供しており、ほとんどの場合、このユーティリティを使用する際の主要なインターフェイスとなります。
+
+
+
+[[command-line-interface]]
+=== コマンドライン インターフェイス
+
+管理シェルを通じて、テキストベースのコマンドラインインターフェイスを利用できます。CLI管理シェルには、以下の方法でアクセスできます：
+
+* セキュアシェル（SSH）
+* 仮想マシンコンソール
+
+
+通常、仮想マシンコンソールは、インストールおよび初期設定プロセスの一部として使用されます。ただし、ほとんどの場合、SSHの方がより柔軟で便利なオプションです。
+
+
+
+[[rest-web-services-api]]
+=== REST Web サービス API
+
+外部クライアントに公開されているREST WebサービスAPIは、Deployユーティリティに接続する際に別の選択肢を提供します。RESTウェブサービスをサポートする主要なプログラミング言語またはツールであれば、どれでもAPIにアクセスできます。人気のある選択肢は以下のとおりです：
+
+* Python
+* Java
+* Curl
+
+
+プログラミング言語またはスクリプト言語を使用すると、ONTAP Select クラスタの導入と管理を自動化できます。
+
+
+
+[[ontap-select-online-documentation-web-page]]
+=== ONTAP Select オンライン ドキュメント Web ページ
+
+デプロイユーティリティでオンラインドキュメントのWebページを表示することは、REST WebサービスAPIにアクセスする別の方法です。しかし、プログラミング言語を使用する代わりに、ブラウザを使用してページ経由で管理APIにアクセスします。以下の機能が提供されます：
+
+* REST Web サービス API における各呼び出しの詳細な説明
+* API呼び出しを手動で発行する機能
+
+
+Deploy仮想マシンのIPアドレスまたはドメイン名を使用して、オンラインドキュメントページにアクセスできます。ページを表示するには、ブラウザに次の形式のURLを入力します（DeployのVMインスタンスに適したIPアドレスまたはドメイン名に置き換えてください）： `\http://<ip_address>/api/ui`

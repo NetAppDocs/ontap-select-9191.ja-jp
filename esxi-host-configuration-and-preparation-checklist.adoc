@@ -1,0 +1,97 @@
+---
+sidebar: sidebar 
+permalink: esxi-host-configuration-and-preparation-checklist.html 
+keywords: ontap select, pre-installation checklist, esxi, host preparation 
+summary: ONTAP Selectノードを導入する各ESXiハイパーバイザーホストを準備します。ホストを準備する際には、ホストが適切に構成され、ONTAP Selectクラスタのデプロイをサポートする準備ができていることを確認するために、デプロイ環境を慎重に評価します。 
+---
+= ONTAP Select 用に ESXi ホストを準備する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectノードがデプロイされる各ESXiハイパーバイザー ホストを準備します。ホストを準備する際には、導入環境を慎重に評価して、ホストが正しく設定され、ONTAP Select クラスタの導入をサポートする準備ができていることを確認します。
+
+
+NOTE: ONTAP Select Deploy管理ユーティリティは、ハイパーバイザーホストの必要なネットワークとストレージの設定を実行しません。ONTAP Selectクラスタを導入する前に、各ホストを手動で準備する必要があります。
+
+
+
+[[step-1-prepare-the-esxi-hypervisor-host]]
+== ステップ1：ESXiハイパーバイザーホストを準備する
+
+ESXiホストとファイアウォールポートの設定を確認してください。
+
+.手順
+. 各ESXiが以下の設定で構成されていることを確認してください：
++
+** プリインストール済みでサポート対象のハイパーバイザー
+** VMware vSphere ライセンス
+
+
+. 同じvCenterサーバーが、クラスタ内にONTAP Selectノードが導入されているすべてのホストを管理できることを確認してください。
+. ファイアウォールポートがvSphereへのアクセスを許可するように構成されていることを確認してください。これらのポートは、ONTAP Select仮想マシンへのシリアル ポート接続をサポートするために開放されている必要があります。
++
+[role="tabbed-block"]
+====
+.推奨
+--
+NetAppでは、vSphereへのアクセスを許可するために、以下のファイアウォールポートを開くことを推奨しています：
+
+** ポート7200～7400（インバウンドトラフィックとアウトバウンドトラフィックの両方）
+
+
+--
+.デフォルト
+--
+デフォルトでは、VMwareは以下のポートへのアクセスを許可します。
+
+** ポート22およびポート1024～65535（インバウンドトラフィック）
+** ポート0～65535（アウトバウンドトラフィック）
+
+
+--
+====
++
+詳細については、link:https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/8-0/vsphere-security-8-0/securing-esxi-hosts/customizing-hosts-with-the-security-profile/esxi-firewall-configuration.html["Broadcom VMware vSphereドキュメント"^]を参照してください。
+
+. 必要なvCenterの権限について理解しておいてください。詳細については、link:reference_plan_ots_vcenter.html["VMware vCenter Server"]を参照してください。
+
+
+
+
+[[step-2-review-the-ontap-select-cluster-configuration]]
+== ステップ2：ONTAP Selectクラスタ構成を確認する
+
+ONTAP Selectは、マルチノードクラスタまたはシングルノード クラスタとして導入できます。多くの場合、追加のストレージ容量と高可用性（HA）機能があるため、マルチノードクラスタの方が望ましいです。
+
+以下の図は、シングルノード クラスタおよび4ノード クラスタで使用されるONTAP Selectネットワークを示しています。
+
+[role="tabbed-block"]
+====
+.シングルノードクラスタ
+--
+次の図は、シングルノード クラスタを示しています。外部ネットワークは、クライアント、管理、およびクラスタ間レプリケーションのトラフィックを伝送します（SnapMirror/SnapVault）。
+
+image:CHK_01.jpg["シングルノード クラスタで1つのネットワークを表示"]
+
+--
+.4ノードクラスタ
+--
+次の図は、2つのネットワークを示す4ノードクラスタを示しています。内部ネットワークは、ONTAPクラスタネットワークサービスをサポートするノード間の通信を可能にします。外部ネットワークは、クライアント、管理、およびクラスタ間レプリケーションのトラフィックを伝送します（SnapMirror/SnapVault）。
+
+image:CHK_02.jpg["4ノードクラスタに2つのネットワークを表示"]
+
+--
+.4ノードクラスタ内の単一ノード
+--
+次の図は、4ノードクラスタ内の単一のONTAP Select仮想マシンの典型的なネットワーク構成を示しています。2つの独立したネットワークが存在します：ONTAP内部とONTAP外部。
+
+image:CHK_03.jpg["4ノードクラスタ内の単一ノード"]
+
+--
+====

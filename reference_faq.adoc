@@ -1,0 +1,329 @@
+---
+sidebar: sidebar 
+permalink: reference_faq.html 
+keywords: faq, frequently asked questions 
+summary: ONTAP Select に関するよくある質問への回答を見つけることができます。 
+---
+= ONTAP Select に関するよくある質問
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select に関するよくある質問への回答を参照できます。
+
+[NOTE]
+====
+ONTAP Select 9.14.1以降、KVMハイパーバイザーのサポートが復活しました。以前は、KVMハイパーバイザー上に新しいクラスタを導入するためのサポートがONTAP Select 9.10.1で削除され、既存のKVMクラスタとホストの管理（オフラインにする、または削除する場合を除く）のサポートがONTAP Select 9.11.1で削除されました。
+
+====
+
+
+[[general]]
+== 全般
+
+一般的な質問と回答がいくつかあります。
+
+.ONTAP Select Deploy と ONTAP Select の違いは何ですか？
+ONTAP Select Deploy は、ONTAP Select クラスタの作成に使用されるユーティリティです。現在、ONTAP Select Deploy は本番環境クラスタを作成するために利用できる唯一の方法です。ONTAP Select Deploy は、評価用 Select クラスタを作成するためにも使用でき、クライアントが本番環境へのデプロイの実際の手順をテストおよび文書化できるようにします。ONTAP Select Deploy は、評価期間中に消費された容量をカバーするのに十分な容量を持つ適切な Capacity Tier ライセンスを使用することで、評価用クラスタを本番用クラスタに変換することもできます。
+
+ONTAP Select Deploy は、ONTAP Select のイメージを含む仮想マシンです。クラスタのインストール中に、ONTAP Select Deploy はいくつかのチェックを実行して、ONTAP Select の最小要件が満たされていることを確認します。ONTAP Select Deploy VM と Select クラスタは、個別にアップグレードできます。
+
+.ONTAP Select のパフォーマンスの問題をトラブルシューティングするにはどうすればよいですか。
+FAS上のONTAPと同様に、パフォーマンスデータはperfstatユーティリティを使用して収集する必要があります。以下はコマンドの例です：
+
+[listing]
+----
+perfstat8 –i N,m -t <sample time in minutes> --verbose --nodes=<filer IP> --diag-passwd=abcxyz --mode="cluster-mode" > <name of output file>
+----
+.ONTAP Select Deploy の Swagger API ページにアクセスするにはどうすればよいですか。
+[listing]
+----
+http://<Deploy-IP-Address/api/ui
+----
+
+NOTE: API v3 リリースは、以前のバージョンの API との後方互換性がありません。新しい API 手順が https://library.netapp.com/ecm/ecm_download_file/ECMLP2845694["Field Portal"^]で利用できます。
+
+.ONTAP Select VMはVMwareまたはその他のサードパーティ製スナップショットでバックアップできますか？
+いいえ。ONTAP Select VMは独立した永続ドライブを使用するため、VMwareベースのスナップショットからは除外されます。ONTAP Selectのバックアップでサポートされている唯一の方法は、SnapMirrorまたはSnapVaultです。
+
+.このFAQに記載されていない質問については、どこで説明を受けられますか。
+link:mailto:ng-ses-ontap-select@netapp.com["ng-ses-ontap-select@netapp.com"]にお問い合わせください。
+
+
+
+[[licenses-installation-upgrades-and-reverts]]
+== ライセンス、インストール、アップグレード、およびリバート
+
+ライセンス、インストール、アップグレード、およびリバートに関する質問と回答がいくつかあります。
+
+.ONTAP SelectとONTAP Select Deployは個別にアップグレードできますか？
+はい。ONTAP Select Deployユーティリティは、ONTAP Selectクラスタとは別にアップグレードできます。同様に、Selectクラスタは、ONTAP Select Deployユーティリティとは別にアップグレードできます。
+
+.ONTAP SelectはFASクラスタと同じ手順でアップグレードできますか？
+はい、Select クラスタのアップグレード手順は FAS クラスタのアップグレードと同じですが、ONTAP Select アップグレードバイナリは FAS 上の ONTAP アップグレードバイナリとは別のダウンロードになります。
+
+.ONTAP SelectはFASクラスタと同じ手順を使用してリバートできますか？
+はい、ONTAP Select クラスタのリバート手順は、FAS クラスタのリバート手順とほぼ同じです。ただし、いくつか違いがあります：
+
+* アップグレードされたONTAP Selectのインスタンスのみ元に戻すことができ、元のインストールバージョンまでしか戻せません。新規インストールは、ONTAP Selectが一般的にその古いリリースをサポートしている場合でも、古いコードリリースに戻すことはできません。
+* ONTAP Select（KVM）およびONTAP Select（ESXi）でソフトウェアRAIDを使用している場合、ソフトウェアRAIDをサポートしていない以前のバージョンに戻すことはできません。さらに、ESXi上のONTAP Select 9.5以降の新規インストールでは、VMXNET3ネットワークドライバと、可能な場合はvNVMeドライバが使用されます。これらの新規インストールは、以前のバージョンのONTAP Selectに戻すことはできません。
+* ONTAP Select VMが（Premium XLライセンスを使用して）ラージインスタンスにアップグレードされた場合、以前のバージョンではラージインスタンス機能が利用できないため、9.6より前のバージョンに戻すことはサポートされていません。
+
+
+.ONTAP MetroCluster SDSには最低でもプレミアムライセンスが必要ですか？
+○
+
+.ONTAP Selectクラスタのネットワーク構成はインストール後に変更できますか？
+以下のONTAP Selectクラスタプロパティの変更は、UI、CLI、またはREST APIを介して使用可能なクラスタ更新処理を使用してONTAP Select Deployによって認識されます：
+
+* ネットワーク構成（IPアドレス、DNS、NTP、ネットマスク、ゲートウェイ）
+* ONTAP Selectクラスタ、ノード名、およびバージョン
+
+
+次のONTAP Select VMの変更も認識されます：
+
+* ONTAP Select VM名と状態の変更（オンラインまたはオフラインなど）
+* ホストネットワーク名とストレージプール名の変更
+
+
+ONTAP Select Deploy 2.6にアップグレードすると、すでにデプロイされているが元の構成から変更されていないONTAP Selectクラスタに対して、これらの変更のサポートが有効になります。つまり、上記のONTAP SelectクラスタプロパティがシステムマネージャまたはvCenterを使用して変更されている場合、ONTAP Select Deploy 2.6にアップグレードしても、これらの不整合は修正されません。ONTAP Select Deployが各ONTAP Select VMに固有のメタデータを追加するには、まずONTAP Selectプロパティの変更をロールバックする必要があります。
+
+.ONTAP Select Deployのネットワーク構成はインストール後に変更できますか？
+環境で実行された後に Deploy インスタンスのネットワーク詳細を変更することはサポートされていません。詳細については、ナレッジベースの記事link:https://kb.netapp.com/onprem/ontap/ONTAP_Select/Modifying_DNS_configuration_of_ONTAP_Deploy_instance["ONTAP Deploy インスタンスの DNS 構成の変更"^]を参照してください。
+
+.Deploy は ONTAP Select ライセンスが更新されたことをどのように検出しますか？
+方法はすべてのライセンスで同じですが、Capacity TierライセンスかCapacity Poolライセンスかによって詳細は異なります。
+
+* ONTAP Select Deploy は、NetAppから更新されたライセンス ファイルを購入することで、ライセンスとサポート契約が更新されたかどうかを検出します。ライセンス ファイル（.NLF）には容量、開始日、終了日が含まれており、link:https://mysupport.netapp.com/site/["NetApp サポート サイト"^]で生成され、Deploy サーバーで更新されます。
++
+
+NOTE: *Add*機能と*Update*機能を使用して、NLFをDeployサーバーにロードできます。*Add*はサーバーに新しいライセンスを追加し、*Update*は容量、ノードライセンス（Standard、Premium、Premium XL）、サポートの開始日と終了日（Capacity Tierライセンス）、またはサブスクリプションの開始日と終了日（Capacity Poolライセンス）などの情報で既存のファイルを更新します。
+
++
+
+CAUTION: ライセンスファイルを改変しないでください。そうするとセキュリティキーが無効になり、ライセンスも無効になります。
+
+* *容量ティアライセンス*は、ONTAP Selectノードのシリアル番号に関連付けられた、ノードごとの永続ライセンスです。別途サポート契約が必要となります。ライセンスは永続的ですが、ONTAP Selectのアップグレードにアクセスし、NetAppテクニカルサポートからサポートを受けるには、サポート契約を更新する必要があります。容量やノードサイズなどのライセンスパラメータを変更するには、有効なサポート契約も必要です。
++
+Capacity Tierライセンスのアップデート、パラメータの変更、またはサポート契約の更新を購入する際には、注文の一部としてノードのシリアル番号が必要です。Capacity Tierノードのシリアル番号は9桁で、「32」で始まります。
+
++
+購入が完了し、ライセンスファイルが生成されたら、*Update*機能を使用してDeployサーバーにアップロードします。
+
+* *Capacity Pool license*とは、特定の容量プールとノードサイズ（standard、premium、premium XL）を使用して1つ以上のクラスタを導入する権利を付与するサブスクリプションです。サブスクリプションには、指定された期間におけるライセンスの使用権とサポートが含まれます。ライセンスの使用権およびサポート契約には、開始日と終了日が明記されています。
+
+
+.Deployは、ノードのライセンスまたはサポート契約が更新されているかどうかをどのように検出しますか？
+更新されたライセンスファイルの購入、生成、アップロードは、Deployが更新されたライセンスとサポート契約を検出する方法です。
+
+Capacity Tierサポート契約の終了日が過ぎた場合、ノードは引き続き稼働できますが、サポート契約を最新の状態にしない限り、ONTAPアップデートのダウンロードとインストール、またはNetAppテクニカルサポートへの問い合わせができなくなります。
+
+Capacity Poolサブスクリプションが期限切れになると、システムはまず警告を表示しますが、30日経過後にシステムがシャットダウンした場合、Deployサーバに更新されたサブスクリプションがインストールされるまで再起動しません。
+
+
+
+[[storage]]
+== ストレージ
+
+ストレージに関する質問と回答がいくつかあります。
+
+.単一のONTAP Select Deployインスタンスで、ESXiとKVMの両方にクラスタを作成できますか。
+○ONTAP Select DeployはKVMまたはESXiのいずれかにインストールでき、どちらのインストールでもいずれかのハイパーバイザー上にONTAP Selectクラスタを作成できます。
+
+.ESXi 上の ONTAP Select には vCenter が必要ですか。
+ESXiホストが適切にライセンスされている場合、ESXiホストをvCenter Serverで管理する必要はありません。ただし、ホストがvCenter serverで管理されている場合は、ONTAP Select DeployをそのvCenter Serverを使用するように設定する必要があります。つまり、ESXiホストがvCenter Serverによって積極的に管理されている場合、ONTAP Select Deployでスタンドアロンとして設定することはできません。ONTAP Select Deploy VMは、vMotionやVMware HAイベントによるESXiホスト間のすべてのONTAP Select VMの移行を追跡するために、vCenterに依存していることに注意してください。
+
+.ソフトウェアRAIDとは
+ONTAP Selectは、ハードウェアRAIDコントローラなしでサーバーを使用できます。この場合、RAID機能はソフトウェアで実装されます。ソフトウェアRAIDを使用する場合、SSDとNVMeドライブの両方がサポートされます。ONTAP Selectのブートディスクとコアディスクは、仮想化されたパーティション（ストレージプールまたはデータストア）内に配置する必要があります。ONTAP SelectはRD2（ルート-データ-データパーティショニング）を使用してSSDをパーティション分割します。したがって、ONTAP Selectルートパーティションは、データアグリゲートに使用されるのと同じ物理スピンドル上に存在します。ただし、ルートアグリゲート、ブートディスク、コアディスクといった仮想化ディスクは、容量ライセンスの対象外となります。
+
+AFF/FASで利用可能なすべてのRAID方式は、ONTAP Selectでも利用可能です。これには、RAID 4、RAID DP、RAID-TECが含まれます。必要なSSDの最小台数は、選択するRAID構成の種類によって異なります。ベストプラクティスでは、少なくとも1つのスペアが必要です。スペアディスクとパリティディスクは、容量ライセンスの対象外です。
+
+.ソフトウェアRAIDは、ハードウェアRAID構成とどのように異なるのですか？
+ソフトウェアRAIDは、ONTAPソフトウェアスタックのレイヤです。ソフトウェアRAIDは、物理ドライブがパーティション化され、ONTAP Select VM内で生ディスクとして使用できるため、より高度な管理制御を提供します。一方、ハードウェアRAIDでは、通常は単一の大きなLUNが利用可能で、そこからONTAP Select内で認識されるVMDISKを作成するために切り出すことができます。ソフトウェアRAIDはオプションとして利用可能で、ハードウェアRAIDの代わりに使用できます。
+
+ソフトウェアRAIDの要件の一部は以下のとおりです：
+
+* ESXiおよびKVMでサポートされます
++
+** ONTAP Select 9.14.1以降、KVMハイパーバイザーのサポートが復活しました。以前は、KVMハイパーバイザーのサポートはONTAP Select 9.10.1で削除されていました。
+
+
+* 対応物理ディスク容量：200GB～32TB
+* DAS構成でのみサポートされます
+* SSDまたはNVMeに対応
+* Premium または Premium XL ONTAP Select ライセンスが必要です
+* ハードウェアRAIDコントローラは存在しないか無効になっているか、またはSAS HBAモードで動作する必要があります
+* システムディスクには、専用LUNに基づくLVMストレージプールまたはデータストアを使用する必要があります（コアダンプ、ブート/NVRAM、Mediator）。
+
+
+.ONTAP Select for KVMは複数のNICボンディングをサポートしますか？
+KVMにインストールする場合は、単一のボンドと単一のブリッジを使用する必要があります。物理ポートが2つまたは4つあるホストでは、すべてのポートを同じボンドに含める必要があります。
+
+.ONTAP Selectは、ハイパーバイザーホストの物理ディスクまたはNICの障害をどのようにレポートまたはアラートしますか？ONTAP Selectはこの情報をハイパーバイザーから取得しますか、それとも監視はハイパーバイザーレベルで設定する必要がありますか？
+ハードウェアRAIDコントローラを使用する場合、ONTAP Selectは基盤となるサーバーの問題をほとんど認識しません。サーバーが当社のベストプラクティスに従って構成されていれば、一定レベルの冗長性が確保されているはずです。ドライブ障害への対応には、RAID 5/6構成をお勧めします。ソフトウェアRAID構成の場合、ONTAPはディスク障害に関するアラートの発行を担当し、スペアドライブがある場合はドライブの再構築を開始します。
+
+ネットワーク層における単一障害点を回避するため、最低でも2つの物理NICを使用する必要があります。NetAppでは、Data、Mgmt、およびInternalポートグループに、チームまたはボンド内に2つ以上のアップリンクを含むNICチーミングおよびボンディングを設定することを推奨します。このような構成により、アップリンクに障害が発生した場合、仮想スイッチは障害が発生したアップリンクからNICチーム内の正常なアップリンクへトラフィックを移動させます。推奨されるネットワーク構成の詳細については、link:reference_plan_best_practices.html#networking["ベストプラクティスの概要：ネットワーク"]を参照してください。
+
+その他のエラーはすべて、2ノードまたは4ノードのクラスタの場合はONTAP HAで処理されます。ハイパーバイザーサーバーを交換する必要があり、ONTAP Selectクラスタを新しいサーバーで再構築する必要がある場合は、_ONTAP Selectノードをリカバリできますか？_を参照してください。
+
+.ONTAP Selectノードをリカバリできますか。
+ONTAP Selectノードをリカバリする必要がある場合（ONTAP Select VMまたはホストが完全に失われた場合やシングルノード クラスタが誤って削除された場合など）は、NetAppテクニカルサポートにお問い合わせください。詳細については、ナレッジベースの記事link:https://kb.netapp.com/on-prem/ontap/ontap-select/Select-KBs/ONTAP_Select_node_VM_recovery_in_case_of_disaster["災害発生時のONTAP SelectノードVMのリカバリ"^]を参照してください。
+
+.ONTAP Selectでサポートされるデータストアの最大サイズはどれくらいですか？
+vSANを含むすべての構成は、ONTAP Selectノードあたり400TBのストレージをサポートします。
+
+サポートされている最大サイズを超えるデータストアにインストールする場合は、製品のセットアップ時にCapacity Capを使用する必要があります。
+
+.ONTAP Select ノードの容量を増やすにはどうすればよいですか。
+ONTAP Select Deploy には、ONTAP Select ノードでの容量拡張処理をサポートするストレージ追加ワークフローが含まれています。管理対象のストレージは、同じデータストアの空き容量（空き容量がある場合）を使用するか、別のデータストアから容量を追加することで拡張できます。同じアグリゲート内でローカルデータストアとリモートデータストアを混在させることはサポートされていません。
+
+ストレージの追加はソフトウェアRAIDもサポートしています。ただし、ソフトウェアRAIDの場合は、ONTAP Select VMに物理ドライブを追加する必要があります。この場合のストレージの追加は、FASまたはAFFアレイの管理と同様です。ソフトウェアRAIDを使用してONTAP Selectノードにストレージを追加する場合は、RAIDグループのサイズとドライブのサイズを考慮する必要があります。
+
+.ONTAP Selectは、vSANまたは外部アレイタイプのデータストアをサポートしていますか？
+ONTAP Select DeployおよびONTAP Select for ESXiは、ストレージプールにvSANまたは外部アレイタイプのデータストアを使用するONTAP Selectシングルノード クラスタの構成をサポートします。
+
+ONTAP Select DeployおよびKVM向けONTAP Selectは、外部アレイ上の共有論理ストレージプールタイプを使用したONTAP Select シングルノード クラスタの構成をサポートします。ストレージプールは、iSCSIまたはFC/FCoEに基づいて構築できます。その他の種類のストレージプールはサポートされていません。
+
+共有ストレージ上のマルチノード HA クラスターがサポートされています。
+
+.ONTAP SelectはvSANまたは一部のHCIスタックを含むその他の共有外部ストレージ上のマルチノードクラスタをサポートしていますか？
+外部ストレージを使用するマルチノードクラスタ（マルチノードvNAS）は、ESXiとKVMの両方でサポートされています。同じクラスタ内でのハイパーバイザーの混在はサポートされていません。共有ストレージ上のHAアーキテクチャは、HAペア内の各ノードがパートナーデータのミラーコピーを保持していることを意味します。しかし、VMware HAやKVM Live Motionに依存するシングルノード クラスタとは異なり、マルチノードクラスタはONTAPの無停止運用という利点をもたらします。
+
+ONTAP Select Deployは同じホスト上の複数のONTAP Select VMをサポートしますが、クラスタ作成時にそれらのインスタンスが同じONTAP Selectクラスタの一部になることはできません。ESXi環境の場合、NetAppはVMアンチアフィニティルールを作成して、VMware HAが同じONTAP Selectクラスタの複数のONTAP Select VMを単一のESXiホストに移行しないようにすることを推奨します。さらに、ONTAP Select Deployが管理者（ユーザーが開始した）vMotionまたはONTAP Select VMのライブマイグレーションによって、2つのONTAP Selectノードが同じ物理ホスト上に配置されるなどのベストプラクティス違反が発生したことを検出した場合、ONTAP Select DeployはDeploy UIとログにアラートを投稿します。ONTAP Select DeployがONTAP Select VMの場所を認識する唯一の方法は、クラスタ更新操作の結果としてであり、これはONTAP Select Deploy管理者が開始する必要がある手動操作です。ONTAP Select Deployにはプロアクティブな監視を可能にする機能はなく、アラートはDeploy UIまたはログを通じてのみ表示されます。つまり、このアラートは集中監視インフラストラクチャに転送できません。
+
+.ONTAP SelectはVMwareのNSX VXLANをサポートしていますか？
+NSX-V VXLANポートグループがサポートされています。ONTAP MetroCluster SDSを含むマルチノードHAの場合は、VXLANオーバーヘッドに対応するために、内部ネットワークMTUを7500~8900（9000ではなく）に設定してください。内部ネットワークのMTUは、クラスタの導入時にONTAP Select Deployを使用して設定できます。
+
+.ONTAP SelectはKVMライブマイグレーションをサポートしていますか？
+外部アレイストレージプール上で動作する ONTAP Select VM は、 virsh ライブマイグレーションをサポートしています。
+
+.vSAN AFにONTAP Select Premiumは必要ですか？
+いいえ、外部アレイまたはvSAN構成がすべてフラッシュであるかどうかに関わらず、すべてのバージョンがサポートされています。
+
+.サポートされているvSAN FTT/FTM設定は何ですか？
+Select VMはvSANデータストアのストレージポリシーを継承し、FTT/FTM設定に制限はありません。ただし、FTT/FTM の設定によっては、ONTAP Select VMのサイズは、セットアップ時に設定した容量よりも大幅に大きくなる可能性があります。ONTAP Selectは、セットアップ中に作成される、thick-eager、ゼロフィルVMDKを使用します。同じ共有データストアを使用する他の仮想マシンへの影響を避けるため、Select容量とFTT/FTM設定から算出される実際のSelect VMサイズに対応できる十分な空き容量をデータストアに確保することが重要です。
+
+.複数の ONTAP Select ノードが異なる Select クラスタの一部である場合、同じホスト上で実行できますか？
+vNAS構成の場合のみ、同じホスト上に複数のONTAP Selectノードを設定できます。ただし、これらのノードが同じONTAP Selectクラスタの一部でない場合に限ります。同じ物理ホスト上の複数のONTAP SelectノードがRAIDコントローラへのアクセスを競合するため、DAS構成ではサポートされていません。
+
+.10GEポートを1つだけ搭載したホストでONTAP Selectを実行できますか?また、ESXiとKVMの両方で使用できますか?
+外部ネットワークへの接続には、10GEポートを1つ使用できます。ただし、NetAppでは、制約のあるスモールフォームファクタ環境でのみこれを使用することをお勧めします。これはESXiとKVMの両方でサポートされています。
+
+.KVM でライブマイグレーションを実行するには、他にどのようなプロセスを実行する必要がありますか？
+ライブマイグレーションに参加する各ホストに、オープンソースのCLVMおよびpacemaker（pcs）コンポーネントをインストールして実行する必要があります。これは、各ホスト上の同じボリュームグループにアクセスするために必要です。
+
+
+
+[[vcenter]]
+== vCenter
+
+VMware vCenterに関する質問と回答がいくつかあります。
+
+.ONTAP Select DeployはvCenterとどのように通信し、どのファイアウォール ポートを開放する必要がありますか？
+ONTAP Select DeployはVMware VIX APIを使用してvCenter、ESXiホスト、またはその両方と通信します。VMwareのドキュメントには、vCenter ServerまたはESXiホストへの初期接続は、TCPポート443でHTTPS/SOAPを使用して行われると記載されています。これは、TLS/SSL経由のセキュアなHTTP用のポートです。次に、TCPポート902のソケットでESXiホストへの接続が開かれます。この接続を介して送信されるデータはSSLで暗号化されます。さらに、ONTAP Select Deployは `PING`コマンドを実行して、指定したIPアドレスで応答するESXiホストがあることを確認します。
+
+ONTAP Select Deployは、次のようにONTAP Selectノードおよびクラスタ管理IPアドレスと通信できる必要があります：
+
+* pingを実行します。
+* SSH（ポート22）
+* SSL（ポート443）
+
+
+2ノードクラスタの場合、ONTAP Select Deployがクラスタメールボックスをホストします。各ONTAP SelectノードはiSCSI（ポート3260）を介してONTAP Select Deployに到達できる必要があります。
+
+マルチノード クラスタの場合、内部ネットワークは完全にオープンである必要があります（NATまたはファイアウォールなし）。
+
+.ONTAP Select クラスタを作成するために ONTAP Select Deploy に必要な vCenter 権限は何ですか？
+必要なvCenter権限のリストについては、こちらを参照してください：link:reference_plan_ots_vcenter.html["VMware vCenter Server"]
+
+
+
+[[ha-and-clusters]]
+== HAとクラスタ
+
+HAペアとクラスタに関する質問と回答がいくつかあります。
+
+.4ノード、6ノード、8ノードのクラスタと2ノードのONTAP Selectクラスタの違いは何ですか？
+4ノード、6ノード、8ノードのクラスタでは、ONTAP Select Deploy VMは主にクラスタの作成に使用されますが、2ノードクラスタでは、HAクォーラムのためにONTAP Select Deploy VMに継続的に依存します。ONTAP Select Deploy VMが使用できない場合、フェイルオーバーサービスは無効になります。
+
+.MetroCluster SDSとは
+MetroCluster SDSは、NetAppのMetroClusterビジネス継続性ソリューションのカテゴリに属する、低コストの同期レプリケーションオプションです。FAS Hybrid Flash、AFF、およびNetApp Private Storage for Cloudで利用可能なNetApp MetroClusterとは異なり、ONTAP Selectでのみ利用可能です。
+
+.MetroCluster SDS と NetApp MetroCluster の違いは何ですか。
+MetroCluster SDSは同期レプリケーションソリューションであり、NetApp MetroClusterソリューションに分類されます。ただし、主な違いは接続タイプです（FCとIPではなく、IPネットワークのみがサポートされます）。
+
+.2ノードONTAP Selectクラスタと2ノードONTAP MetroCluster SDSの違いは何ですか？
+2ノードクラスタは、両方のノードが同じデータセンター内にあり、互いに300m以内の距離にあるクラスタとして定義されます。一般的に、両方のノードは同じネットワーク スイッチまたはインタースイッチリンクで接続されたネットワーク スイッチのセットへのアップリンクを持っています。
+
+2ノードMetroCluster SDSは、物理的に分離されたノード（異なる部屋、異なる建物、または異なるデータセンター）で構成されるクラスタとして定義され、各ノードのアップリンク接続は個別のネットワークスイッチに接続されています。MetroCluster SDSは専用ハードウェアを必要としませんが、環境はレイテンシに関する最小要件（RTT 5ms、ジッター5ms、合計最大10ms）をサポートする必要があります。
+
+MetroCluster SDSはプレミアム機能であり、PremiumまたはPremium XLライセンスが必要です。Premiumライセンスでは、SmallおよびMedium VMの作成に加え、HDDおよびSSDメディアの作成もサポートされています。これらの構成はすべてサポートされています。
+
+.ONTAP MetroCluster SDSにはローカルストレージ（DAS）が必要ですか？
+ONTAP MetroCluster SDSは、あらゆる種類のストレージ構成（DASおよびvNAS）をサポートしています。
+
+.ONTAP MetroCluster SDSはソフトウェアRAIDをサポートしますか？
+はい、ソフトウェア RAID は KVM と ESXi の両方で SSD メディアでサポートされています。
+
+.ONTAP MetroCluster SDSはSSDと回転式メディアの両方をサポートしていますか？
+はい。ただし、Premiumライセンスが必要です。このライセンスは、小規模および中規模のVMとSSDおよび回転式メディアの両方をサポートします。
+
+.ONTAP MetroCluster SDSは4ノード以上のクラスタサイズをサポートしていますか？
+いいえ、Mediatorを備えた2ノードクラスタのみをMetroCluster SDSとして構成できます。
+
+.ONTAP MetroCluster SDS の要件は何ですか。
+要件は以下のとおりです：
+
+* 3つのデータセンター（1つはONTAP Select Deploy Mediator用、各ノードに1つずつ）
+* 最大合計10msの5ms RTTと5msジッター
+* ONTAP Select Deploy MediatorとONTAP Selectノード間の125msのRTTと5Mbpsの最小帯域幅
+* PremiumまたはPremium XLライセンス
+
+
+.ONTAP SelectはVMware vMotionまたはVMware HAをサポートしていますか？
+vSANデータストアまたは外部アレイデータストア上で実行されるONTAP Select VM（つまり、vNASデプロイメント）は、vMotion、DRS、およびVMware HA機能をサポートします。
+
+.ONTAP SelectはストレージvMotionをサポートしていますか？
+ストレージvMotionは、シングルノードおよびマルチノードのONTAP SelectクラスタとONTAP Select Deploy VMを含むすべての構成でサポートされています。ストレージvMotionは、ONTAP SelectまたはONTAP Select Deploy VMを異なるVMFSバージョン間（たとえば、VMFS 5からVMFS 6）で移行するために使用できますが、この使用例に限定されるわけではありません。ベストプラクティスは、ストレージvMotion操作を開始する前にVMをシャットダウンすることです。ONTAP Select Deployは、ストレージvMotion操作が完了した後に次の操作を実行する必要があります：
+
+[listing]
+----
+cluster refresh
+----
+
+NOTE: 異なるタイプのデータストア間のストレージvMotion操作はサポートされていません。つまり、NFSタイプのデータストアとVMFSデータストア間のストレージvMotion操作はサポートされていません。一般的に、外部データストアとDASデータストア間のストレージvMotion操作はサポートされていません。
+
+.ONTAP SelectノードとESXiホスト間のHAトラフィックは、異なるvSwitchおよび/または分離された物理ポート、および/またはESXiホスト間のポイントツーポイントIPケーブルを使用して実行できますか？
+これらの構成はサポートされていません。ONTAP Selectには、クライアントトラフィックを伝送する物理ネットワークアップリンクのステータスを把握する機能がありません。そのため、ONTAP Selectでは、HAハートビートを使用して、VMがクライアントとピアの両方に同時にアクセス可能であることを確認します。物理的な接続が失われると、HAハートビートが失われ、もう一方のノードへの自動フェイルオーバーが実行されます。これは望ましい動作です。
+
+HAトラフィックを別の物理インフラストラクチャに分離すると、Select VMがピアとは通信できるものの、クライアントとは通信できないという結果になる可能性があります。これにより自動HAプロセスが阻害され、手動フェイルオーバーが実行されるまでデータが利用できなくなります。
+
+
+
+[[mediator-service]]
+== メディエーターサービス
+
+メディエーターサービスに関する質問と回答がいくつかあります。
+
+.Mediatorサービスとは何ですか？
+2ノードクラスタは、HAクォーラムのためにONTAP Select Deploy VMに継続的に依存しています。2ノードHAクォーラムネゴシエーションに参加するONTAP Select Deploy VMは、メディエーターVMとしてラベル付けされます。
+
+.Mediator サービスはリモートで利用できますか？
+はい。2ノードHAペアのメディエーターとして動作するONTAP Select Deployは、最大500msのRTTのWAN遅延をサポートし、最低5Mbpsの帯域幅を必要とします。
+
+.Mediatorサービスではどのプロトコルを使用しますか。
+メディエーターのトラフィックは iSCSI であり、ONTAP Select ノード管理 IP アドレスから発信され、ONTAP Select Deploy IP アドレスで終了します。2ノードクラスタを使用する場合、ONTAP Select ノード管理 IP アドレスに IPv6 を使用できないことに注意してください。
+
+.1つのMediatorサービスを複数の2ノードHAクラスタで使用できますか？
+はい。各ONTAP Select Deploy VMは、最大100個の2ノードクラスタONTAP Select用の共通メディエーターサービスとして機能します。
+
+.Mediatorサービスの場所は、導入後に変更できますか。
+はい。別の ONTAP Select Deploy VM を使用して Mediator サービスをホストすることができます。
+
+.ONTAP Selectはメディエーターの有無にかかわらず、ストレッチドクラスターをサポートしますか？
+Mediatorを使用した2ノードクラスタのみが、拡張HA展開モデルでサポートされています。

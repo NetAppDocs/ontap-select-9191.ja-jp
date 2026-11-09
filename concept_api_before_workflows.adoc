@@ -1,0 +1,39 @@
+---
+sidebar: sidebar 
+permalink: concept_api_before_workflows.html 
+keywords: rest api, deploy rest api, rest, workflows, before you begin 
+summary: ワークフロープロセスを見直し、活用できるように準備してください。 
+---
+= ONTAP Select Deploy API ワークフローの使用方法について学ぶ
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ワークフロープロセスを見直し、活用できるように準備してください。
+
+
+
+[[understand-the-api-calls-used-in-the-workflows]]
+== ワークフローで使用される API 呼び出しを理解する
+
+ONTAP Select オンライン ドキュメント ページには、すべての REST API 呼び出しの詳細が記載されています。ここでそれらの詳細を繰り返すのではなく、ワークフロー サンプルで使用される各 API 呼び出しには、ドキュメント ページで呼び出しを見つけるために必要な情報のみが含まれています。特定のAPI呼び出しを見つけたら、入力パラメータ、出力形式、HTTPステータス コード、要求処理のタイプなど、呼び出しの詳細を確認できます。
+
+ワークフローで使用している各API呼び出しについて、ドキュメント ページで見つけるのに役立つように次の情報を示します。
+
+* カテゴリ API呼び出しは、ドキュメントページ上で機能的に関連する領域またはカテゴリごとに整理されています。特定のAPI呼び出しを探すには、ページの一番下までスクロールして、該当するAPIカテゴリを選択してください。
+* HTTP動詞 HTTP動詞は、リソースに対して実行されるアクションを識別します。各API呼び出しは、単一のHTTP動詞によって実行されます。
+* パス パスは、呼び出しを実行する際にアクションが適用される特定のリソースを決定します。コアのURLのあとにパス文字列を追加することで、リソースを識別する完全なURLが形成されます。
+
+
+
+
+[[construct-a-url-to-directly-access-the-rest-api]]
+== REST API に直接アクセスするための URL を構築します
+
+ONTAP Select ドキュメント ページに加えて、Python などのプログラミング言語を介して Deploy REST API に直接アクセスすることもできます。この場合、コア URL は、オンライン ドキュメント ページにアクセスする際に使用する URL とは若干異なります。API に直接アクセスする場合は、ドメイン名とポート番号の文字列に /api を追加する必要があります。例：
+`\http://deploy.mycompany.com/api`

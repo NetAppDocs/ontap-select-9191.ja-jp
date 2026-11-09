@@ -1,0 +1,40 @@
+---
+sidebar: sidebar 
+permalink: task_lic_acquire_cp.html 
+keywords: license, licensing, acquire, Capacity Pools 
+summary: ONTAP Selectノードで使用する容量プールごとに、ライセンスファイルを取得する必要があります。ライセンスファイルには、プールのストレージ容量と有効期限が定義されています。NetAppによって割り当てられた一意のライセンスシリアル番号と、Deployインスタンスに関連付けられたライセンスロックIDの組み合わせによって、License Managerにロックされます。 
+---
+= ONTAP Selectキャパシティプールライセンスを取得する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectノードで使用する容量プールごとに、ライセンスファイルを取得する必要があります。ライセンスファイルには、プールのストレージ容量と有効期限が定義されています。NetAppによって割り当てられた一意のライセンスシリアル番号と、Deployインスタンスに関連付けられたライセンスロックIDの組み合わせによって、License Managerにロックされます。
+
+.開始する前に
+* NetAppによって容量プールに割り当てられた 9 桁のライセンス シリアル番号が必要です。
+* ライセンス ファイルを取得する前に、注文書の発送日から少なくとも 24 時間待つ必要があります。
+* link:sizing-capacity-pool-license.html["Capacity Poolsライセンスのサイズ設定に関する考慮事項"]をレビューしました。
+
+
+.タスク概要
+このタスクは、ONTAP Selectノードで使用されている各容量プールに対して実行する必要があります。
+
+.手順
+. link:https://mysupport.netapp.com/site/["NetApp サポート サイト"^]にログインします。
+. *Systems* > *Software Licenses* を選択します。
+. 容量プールのライセンス シリアル番号を入力し、*Go!* を選択します。
+. ライセンス詳細ページで、*製品詳細*列に移動してください。
+. 適切な行で *NetApp ライセンス ファイルの取得* を選択します。
+. ONTAP Select Deploy インスタンスのライセンス ロック ID を入力し、*送信* を選択します。
+. 適切な配信方法を選択し、* Submit * を選択します。
+. 配信確認ウィンドウで *OK* を選択します。
+
+
+.終了後の操作
+ONTAP Select ノードが容量プールを使用する前に、ライセンス ファイルを Deploy 管理ユーティリティにアップロードする必要があります。

@@ -1,0 +1,172 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_networking.html 
+keywords: plan, planning, networking, network, drivers, vmxnet3, cluster mtu, firewall 
+summary: ONTAP Select を導入する前に、ハイパーバイザー ネットワークを正しく設定する必要があります。 
+---
+= ONTAP Select ネットワーク要件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select を導入する前に、ハイパーバイザー ネットワークを正しく設定する必要があります。
+
+
+
+[[virtual-switch-options]]
+== 仮想スイッチオプション
+
+外部ネットワークと内部ネットワーク（マルチノードクラスタのみ）をサポートするために、各ONTAP Selectホストで仮想スイッチを設定する必要があります。マルチノードクラスタを導入する際には、内部クラスタネットワークのネットワーク接続をテストする必要があります。
+
+
+NOTE: ハイパーバイザーホストでのvSwitchの設定方法と高速インターフェース機能の詳細については、link:concept_nw_concepts_chars.html["ネットワークの詳細"]セクションを参照してください。
+
+
+
+[[upgrade-to-vmxnet3-esxi-only]]
+== VMXNET3へのアップグレード（ESXiのみ）
+
+ONTAP Select 9.5以降、Deploy 2.10を使用する場合、VMXNET3がVMware ESXi上の新しいクラスタ展開に含まれるデフォルトのネットワークドライバです。古いONTAP Selectノードをバージョン9.5以降にアップグレードしても、ドライバは自動的にアップグレードされません。
+
+
+
+[[cluster-mtu]]
+== クラスタ MTU
+
+マルチノードクラスタ内のONTAP Selectノードを接続するために、別の内部ネットワークが使用されます。通常、このネットワークのMTUサイズは9000です。しかし、ONTAP Selectノードを接続するネットワークにとって、このMTUサイズが大きすぎる状況もあります。より小さなフレームに対応するため、内部ネットワークでONTAP Selectが使用するMTUサイズは、7500～9000バイトの範囲にすることができます。
+
+MTUサイズは、クラスタ作成ページの「クラスタ詳細」セクションに表示されます。この値は、Deploy管理ユーティリティによって以下のように決定されます：
+
+. 初期デフォルト値は9000です。
+. HA ペアのホストとネットワークを追加すると、ネットワーク内のvSwitchesの構成に基づいて、必要に応じて MTU 値が削減されます。
+. クラスターの最終的なクラスタMTU値は、すべてのHAペアを追加し、クラスタを作成する準備が整った後に設定されます。
+
+
+
+NOTE: ネットワーク設計に応じて、必要に応じてクラスタMTU値を手動で設定できます。
+
+
+
+[[two-nic-host-with-standard-vswitch-esxi-only]]
+== 標準のvSwitchを使用する2つのNICホスト（ESXiのみ）
+
+2つのNIC構成でONTAP Selectのパフォーマンスを向上させるには、2つのポートグループを使用して内部と外部のネットワーク トラフィックを分離する必要があります。この推奨事項は、以下の特定の構成に適用されます：
+
+* ONTAP Select マルチノードクラスタ
+* 2つのNIC（NIC1とNIC2）
+* 標準vSwitch
+
+
+この環境では、次の2つのポートグループを使用してネットワーク トラフィックを設定する必要があります：
+
+.ポートグループ1
+* 内部ネットワーク（クラスタ、RSM、HA-IC トラフィック）
+* NIC1がアクティブです
+* NIC2はスタンバイ状態です
+
+
+.ポートグループ2
+* 外部ネットワーク（データおよび管理トラフィック）
+* NIC1はスタンバイ状態です
+* NIC2がアクティブ
+
+
+2つのNIC導入の詳細については、link:concept_nw_concepts_chars.html["ネットワークの詳細"]セクションを参照してください。
+
+
+
+[[four-nic-host-with-standard-vswitch-esxi-only]]
+== 標準のvSwitchを使用する4つのNICを備えたホスト（ESXiのみ）
+
+4 NIC構成でONTAP Selectのパフォーマンスを向上させるには、4つのポートグループを使用して内部と外部のネットワーク トラフィックを分離する必要があります。この推奨事項は、以下の特定の構成に適用されます：
+
+* ONTAP Select マルチノードクラスタ
+* 4つのNIC（NIC1、NIC2、NIC3、NIC4）
+* 標準vSwitch
+
+
+この環境では、次の4つのポートグループを使用してネットワーク トラフィックを設定する必要があります。
+
+.ポートグループ1
+* 内部ネットワーク（クラスタ、RSM トラフィック）
+* NIC1がアクティブです
+* NIC2、NIC3、NIC4はスタンバイ状態です
+
+
+.ポートグループ2
+* 内部ネットワーク（クラスタ、HA-IC トラフィック）
+* NIC3がアクティブです
+* NIC1、NIC2、NIC4はスタンバイ状態です
+
+
+.ポートグループ3
+* 外部ネットワーク（データおよび管理トラフィック）
+* NIC2がアクティブです
+* NIC1、NIC3、NIC4はスタンバイ状態です
+
+
+.ポートグループ4
+* 外部ネットワーク（データ トラフィック）
+* NIC4がアクティブです
+* NIC1、NIC2、NIC3はスタンバイ状態です
+
+
+4つのNIC導入の詳細については、link:concept_nw_concepts_chars.html["ネットワークの詳細"]セクションを参照してください。
+
+
+
+[[network-traffic-requirements]]
+== ネットワーク トラフィック要件
+
+ファイアウォールが正しく設定されていることを確認して、ONTAP Select導入環境のさまざまな参加者間でネットワーク トラフィックが流れるようにする必要があります。
+
+.参加者
+ONTAP Select の導入の一部として、ネットワーク トラフィックを交換する参加者またはエンティティが複数存在します。これらについて説明し、ネットワーク トラフィック要件の概要説明で使用します。
+
+* ONTAP Select Deploy管理ユーティリティを導入する
+* vSphere（ESXiのみ）vSphereサーバまたはESXiホスト（クラスタ導入でのホストの管理方法による）
+* ハイパーバイザーサーバ ESXiハイパーバイザホストまたはLinux KVMホスト
+* OTSノードONTAP Selectノード
+* OTSクラスタONTAP Selectクラスタ
+* Admin WSローカル管理ワークステーション
+
+
+.ネットワーク トラフィック要件の概要
+次の表に、ONTAP Select 導入のネットワーク トラフィック要件を示します。
+
+[cols="20,20,35,25"]
+|===
+| プロトコル / ポート | ESXi / KVM | 送受信方向 | 説明 
+
+
+| TLS（443） | ESXi | vCenterサーバー（マネージド）またはESXi（マネージドまたはアンマネージド）へのデプロイ | VMware VIX API 
+
+
+| 902 | ESXi | vCenterサーバー（マネージド）またはESXi（アンマネージド）へのデプロイ | VMware VIX API 
+
+
+| ICMP | ESXiまたはKVM | ハイパーバイザーサーバへの導入 | pingを実行します。 
+
+
+| ICMP | ESXiまたはKVM | 各OTSノードに導入 | pingを実行します。 
+
+
+| SSH（22） | ESXiまたはKVM | 各OTSノードへの管理WS | 管理 
+
+
+| SSH（22） | KVM | ハイパーバイザーサーバーノードへの導入 | ハイパーバイザーサーバへのアクセス 
+
+
+| TLS（443） | ESXiまたはKVM | OTSノードおよびクラスタに導入する | ONTAP へのアクセス 
+
+
+| TLS（443） | ESXiまたはKVM | デプロイする各OTSノード | Deploy へのアクセス（容量プールライセンス） 
+
+
+| iSCSI（3260） | ESXiまたはKVM | デプロイする各OTSノード | メディエーター/メールボックスディスク 
+|===

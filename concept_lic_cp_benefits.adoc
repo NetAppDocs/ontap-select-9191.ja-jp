@@ -1,0 +1,40 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_benefits.html 
+keywords: license, licensing, Capacity Pools, benefits 
+summary: Capacity Tiers ライセンス モデルの代わりに Capacity Pools ライセンス モデルを使用すると、いくつかの利点があります。 
+---
+= ONTAP Selectキャパシティプールライセンスの特典の概要
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+Capacity Tiers ライセンス モデルの代わりに Capacity Pools ライセンス モデルを使用すると、いくつかの利点があります。
+
+
+
+[[more-efficient-use-of-storage-capacity]]
+== ストレージ容量のより効率的な利用
+
+容量階層ライセンスを使用する場合、各ノードに固定のストレージ容量を割り当てます。未使用のスペースは他のノードと共有できないため、事実上無駄になります。Capacity Poolsライセンスでは、各ノードはデータ アグリゲートのサイズに基づいて、必要な容量のみを消費します。
+
+容量は中央プールに固定され、組織内の多数のノード間で共有できます。
+
+
+
+[[significantly-reduced-administrative-overhead-resulting-in-lower-cost]]
+== 管理オーバーヘッドが大幅に削減され、コストが削減される
+
+容量階層ライセンスを使用する場合は、ノードごとにライセンスを取得してインストールする必要があります。キャパシティプールを使用する場合、共有プールごとに1つのライセンスが必要です。これにより、管理上のオーバーヘッドを大幅に削減でき、結果としてコスト削減につながります。
+
+
+
+[[improved-usage-metrics]]
+== 使用状況指標の改善
+
+Deploy Web ユーザインターフェイスは、 Capacity Pool の使用状況に関する詳細な情報を提供します。Capacity Pool で使用されているストレージ容量と利用可能なストレージ容量、どのノードがプールからストレージを使用しているか、クラスタがどのプールから容量を割り当てているかを迅速に把握できます。

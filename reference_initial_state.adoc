@@ -1,0 +1,54 @@
+---
+sidebar: sidebar 
+permalink: reference_initial_state.html 
+keywords: install, installing, initial state, cluster initial state 
+summary: クラスターがデプロイされた後の初期状態を把握し、環境に合わせて必要に応じてクラスターを構成する必要があります。 
+---
+= ONTAP Select クラスタの導入後の初期状態
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+クラスターがデプロイされた後の初期状態を把握し、環境に合わせて必要に応じてクラスターを構成する必要があります。
+
+ONTAP Selectクラスタは、作成後にいくつかの特性を持ちます。
+
+
+NOTE: ONTAP管理者アカウントのロールと権限を制限すると、ONTAP Select Deployによるクラスタの管理機能が制限される可能性があります。詳細については、ナレッジベースの記事link:https://kb.netapp.com/onprem/ontap/ONTAP_Select/OTS_Deploy_cluster_refresh_fails_with_error%3A_ONTAPSelectSysCLIVersionFailed_zapi_returned_bad_status_0%3A_None["OTS Deploy クラスタの更新がエラーで失敗する"^]を参照してください。
+
+.LIF
+顧客指定のLIFには、次の2種類があります：
+
+* クラスタ管理（クラスタごとに1つ）
+* ノード管理（ノードごとに1つ）
+
+
+
+NOTE: マルチノードクラスタには、自動生成された LIF を含む内部ネットワークがあります。
+
+.SVM
+3つのSVMがアクティブです。
+
+* 管理SVM
+* ノードSVM
+* システム（クラスタ）SVM
+
+
+
+NOTE: データSVMは、ONTAP Selectクラスタの導入時には作成されません。導入後にクラスタ管理者が作成する必要があります。詳細については、 https://docs.netapp.com/us-en/ontap/nfs-config/create-svms-data-access-task.html["SVMの作成"^]を参照してください。
+
+.アグリゲート
+ルートアグリゲートが作成されます。
+
+.機能
+すべての機能はライセンスを取得済みで利用可能です。SnapLockとFabricPoolの両方で別途ライセンスが必要です。
+
+.関連情報
+* link:https://docs.netapp.com/us-en/ontap/system-admin/types-svms-concept.html["クラスタに含まれるSVMのタイプ"^]
+* link:reference_lic_ontap_features.html["デフォルトでライセンスされるONTAP機能"]
+

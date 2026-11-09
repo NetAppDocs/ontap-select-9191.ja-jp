@@ -1,0 +1,112 @@
+---
+sidebar: sidebar 
+permalink: task_cli_deploy_image_add.html 
+keywords: administer, administering, cli, deploy, ontap select image, add 
+summary: ONTAP Select イメージを Deploy 管理ユーティリティのインスタンスに追加します。インストール後、ONTAP Selectクラスタの導入時に使用できます。 
+---
+= ONTAP SelectイメージをDeployに追加
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select イメージを Deploy 管理ユーティリティのインスタンスに追加します。イメージをインストールしたら、 ONTAP Select クラスタの導入時に使用できます。
+
+.開始する前に
+新しいONTAP Selectイメージをデプロイに追加する前に、まず不要なイメージを削除する必要があります。
+
+
+NOTE: 追加するONTAP Selectイメージのバージョンは、お使いのDeployユーティリティのインスタンスに付属しているオリジナルバージョンよりも古いバージョンのみにしてください。NetAppから入手可能になった新しいバージョンのONTAP Selectを追加することは、サポートされていない構成です。
+
+
+
+[[step-1-download-the-install-image]]
+== ステップ1：インストールイメージをダウンロードする
+
+DeployユーティリティのインスタンスにONTAP Selectイメージを追加するプロセスを開始するには、NetApp Support Siteからインストールイメージをダウンロードする必要があります。ONTAP Selectのインストールイメージは、単一の圧縮ファイルとしてフォーマットされています。
+
+.手順
+. link:https://mysupport.netapp.com/site/downloads/["NetApp Support Site ダウンロード"^]ページにアクセスします。
+. 下にスクロールして、* ONTAP Select Image *を選択します。
+. インストールイメージの目的のリリースを選択します。
+. エンドユーザー使用許諾契約（EULA）を確認し、*Accept & Continue*を選択してください。
+. 適切な*ONTAP Select Image Install*パッケージを選択してダウンロードしてください。必要に応じてすべてのプロンプトに応答します。
+
+
+
+
+[[step-2-upload-the-install-image-to-deploy]]
+== ステップ2：インストールイメージをDeployにアップロードする
+
+ONTAP Selectインストールイメージを取得したら、ファイルをDeploy仮想マシンにアップロードする必要があります。
+
+.開始する前に
+ローカルワークステーションにインストールイメージファイルがあることを確認します。Deploy 管理者ユーザー アカウントのパスワードも必要です。
+
+.タスク概要
+このタスクでは、ファイルをDeploy仮想マシンにアップロードする1つの方法について説明します。環境によっては、他にも適した方法がある場合があります。
+
+.手順
+. ローカル ワークステーションのコマンド シェルで、次の例に示すように、イメージ ファイルを Deploy 仮想マシンにアップロードします：
++
+....
+scp image_v_93_install_esx.tgz admin@10.234.81.101:/home/admin (provide password when prompted)
+....
++
+....
+sftp admin@10.234.81.101 (provide password when prompted)
+put image_v_93_install_esx.tgz
+exit
+....
+
+
+.結果
+ノードのインストールファイルは、adminユーザーのホームディレクトリに保存されます。
+
+
+
+[[step-3-add-the-install-image]]
+== ステップ3：インストールイメージを追加する
+
+新しいクラスタを導入する際に使用できるように、ONTAP Select インストールイメージを Deploy images ディレクトリに追加します。
+
+.開始する前に
+Deployユーティリティ仮想マシンで、インストールイメージファイルがどのディレクトリに配置されているかを把握しておく必要があります。ファイルは管理者のホームディレクトリにあるものと想定されます。
+
+.手順
+. 管理者（admin）アカウントを使用して、SSH経由でデプロイユーティリティのCLIにサインインします。
+. Bashシェルを起動します：
++
+[source, cli]
+----
+shell bash
+----
+. 次の例に示すように、インストールイメージファイルを images ディレクトリに配置します：
++
+`tar -xf image_v_93_install_esx.tgz -C /opt/netapp/images/`
+
+
+
+
+
+[[step-4-display-the-available-install-images]]
+== ステップ4：利用可能なインストールイメージを表示する
+
+新しいクラスタを導入する際に使用可能な ONTAP Select イメージを表示します。
+
+.手順
+. Deployユーティリティ仮想マシン上のオンラインドキュメントWebページにアクセスし、管理者（admin）アカウントを使用してサインインしてください：
++
+`\http://<FQDN|IP_ADDRESS>/api/ui`
+
++
+Deploy仮想マシンのドメイン名またはIPアドレスを使用します。
+
+. ページの下部に移動して *Deploy* を選択し、次に *GET /images* を選択します。
+. *試してみる！*を選択すると、利用可能なONTAP Selectイメージが表示されます。
+. 目的の画像が利用可能であることを確認してください。
+

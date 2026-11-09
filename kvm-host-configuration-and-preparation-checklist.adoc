@@ -1,0 +1,339 @@
+---
+sidebar: sidebar 
+permalink: kvm-host-configuration-and-preparation-checklist.html 
+keywords: ontap select, pre-installation checklist, kvm, host preparation 
+summary: ONTAP Selectノードを導入する各KVMハイパーバイザーホストを準備します。ホストを準備する際には、ホストが適切に構成され、ONTAP Selectクラスタのデプロイをサポートする準備ができていることを確認するために、デプロイ環境を慎重に評価します。 
+---
+= ONTAP Select 用に KVM ホストを準備する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectノードがデプロイされる各KVMハイパーバイザーホストを準備します。ホストを準備する際には、導入環境を慎重に評価して、ホストが正しく設定され、ONTAP Select クラスタの導入をサポートする準備ができていることを確認します。
+
+
+NOTE: ONTAP Select Deploy管理ユーティリティは、ハイパーバイザーホストの必要なネットワークとストレージの設定を実行しません。ONTAP Selectクラスタを導入する前に、各ホストを手動で準備する必要があります。
+
+
+
+[[step-1-prepare-the-kvm-hypervisor-host]]
+[[prepare-linux-server]]
+== ステップ1：KVMハイパーバイザーホストの準備
+
+ONTAP Select ノードが導入される各 Linux KVM サーバーを準備する必要があります。また、ONTAP Select Deploy 管理ユーティリティが導入されるサーバーも準備する必要があります。
+
+.手順
+. Red Hat Enterprise Linux（RHEL）をインストールします。
++
+ISO イメージを使用して RHEL オペレーティング システムをインストールします。サポートされている RHEL バージョンのリストについては、link:reference_plan_ots_hardware.html#software-compatibility["ハイパーバイザーのソフトウェア互換性情報"]を参照してください。インストール中に、システムを次のように設定します：
+
++
+.. セキュリティポリシーとして Default を選択します。
+.. 仮想化ホストソフトウェアの選択を選択します。
+.. 宛先がローカルブートディスクであり、ONTAP Selectで使用されるRAID LUNではないことを確認してください。
+.. システムの起動後に、ホスト管理インターフェイスが起動していることを確認します。
++
+
+NOTE: /etc/sysconfig/network-scripts の下にある正しいネットワーク設定ファイルを編集し、その後、 `ifup`コマンドを使用してインターフェースを起動できます。
+
+
+
+. ONTAP Select に必要な追加パッケージをインストールします。
++
+ONTAP Selectには、複数の追加ソフトウェアパッケージが必要です。必要なパッケージの正確なリストは、使用しているLinuxのバージョンによって異なります。まず最初に、サーバー上にyumリポジトリが存在することを確認してください。利用できない場合は、 `wget your_repository_location`コマンドを使用して取得できます。
+
++
+
+NOTE: Linuxサーバーのインストール時にソフトウェア選択で「仮想化ホスト」を選択した場合、必要なパッケージの一部は既にインストールされている可能性があります。link:https://docs.openvswitch.org/en/latest/intro/install/general/["Open vSwitch のドキュメント"^]に記載されているように、ソースコードからopenswitchパッケージをインストールする必要がある場合があります。
+
++
+必要なパッケージやその他の構成要件の詳細については、link:https://imt.netapp.com/matrix/#welcome["Interoperability Matrix Tool"^]を参照してください。
+
+. NVMe ディスク用の PCI パススルーを設定します。
++
+構成で NVMe ディスクを使用している場合は、PCI パススルー（DirectPath IO）を設定して、ONTAP Select クラスタ内のローカルに接続された NVMe ディスクへの KVM ホストの直接アクセスを提供する必要があります。次のタスクを実行するには、直接アクセスが必要です：
+
++
+** link:task_chk_nvme_configure.html["KVMホストでNVMeドライブを使用するように設定する"]
+** link:concept_stor_swraid_local.html["クラスタの導入後にソフトウェア RAID を使用します"]
+
+
++
+KVMハイパーバイザーのPCIパススルー（DirectPath IO）の設定方法については、link:https://docs.redhat.com/en/documentation/red_hat_enterprise_linux/5/html/virtualization/chap-virtualization-pci_passthrough#sect-Virtualization-PCI_passthrough-AI_device_to_a_host["Red Hat ドキュメント"^]を参照してください。
+
+. ストレージプールを設定します。
++
+ONTAP Select ストレージプールは、基盤となる物理ストレージを抽象化する論理データ コンテナです。ONTAP Select が導入されている KVM ホストのストレージプールを管理する必要があります。
+
+
+
+
+
+[[step-2-create-a-storage-pool]]
+== ステップ2：ストレージプールを作成する
+
+各 ONTAP Select ノードに少なくとも 1 つのストレージプールを作成します。ローカルハードウェア RAID の代わりにソフトウェア RAID を使用する場合、ルートおよびデータアグリゲート用のストレージディスクがノードに接続されます。この場合も、システムデータ用のストレージプールを作成する必要があります。
+
+.開始する前に
+ONTAP Select が導入されているホストの Linux CLI にサインインできることを確認してください。
+
+.タスク概要
+ONTAP Select Deploy管理ユーティリティは、ストレージプールのターゲット場所が `/dev/<pool_name>`として指定されることを想定しています。ここで、 `<pool_name>`はホスト上の一意のプール名です。
+
+
+NOTE: ストレージプールを作成すると、LUNの全容量が割り当てられます。
+
+.手順
+. Linuxホスト上のローカルデバイスを表示し、ストレージプールを格納するLUNを選択します。
++
+[source, cli]
+----
+lsblk
+----
++
+適切なLUNは、おそらく最大のストレージ容量を持つデバイスです。
+
+. デバイス上のストレージプールを定義します：
++
+[source, cli]
+----
+virsh pool-define-as <pool_name> logical --source-dev <device_name> --target=/dev/<pool_name>
+----
++
+次に例を示します。
+
++
+[listing]
+----
+virsh pool-define-as select_pool logical --source-dev /dev/sdb --target=/dev/select_pool
+----
+. ストレージプールを構築する：
++
+[source, cli]
+----
+virsh pool-build <pool_name>
+----
+. ストレージプールを開始します：
++
+[source, cli]
+----
+virsh pool-start <pool_name>
+----
+. システム起動時にストレージプールが自動的に起動するように設定します：
++
+[source, cli]
+----
+virsh pool-autostart <pool_name>
+----
+. ストレージプールが作成されていることを確認します。
++
+[source, cli]
+----
+virsh pool-list
+----
+
+
+
+
+[[step-3-optionally-delete-a-storage-pool]]
+== ステップ3：必要に応じてストレージプールを削除します
+
+ストレージプールは不要になったら削除できます。
+
+.開始する前に
+ONTAP Select が導入されている Linux CLI にサインインできることを確認してください。
+
+.タスク概要
+ONTAP Select Deploy管理ユーティリティは、ストレージプールのターゲット場所が `/dev/<pool_name>`として指定されることを想定しています。ここで、 `<pool_name>`はホスト上の一意のプール名です。
+
+.手順
+. ストレージプールが定義されていることを確認します。
++
+[source, cli]
+----
+virsh pool-list
+----
+. ストレージプールを破棄する：
++
+[source, cli]
+----
+virsh pool-destroy <pool_name>
+----
+. 非アクティブなストレージプールの設定を解除します：
++
+[source, cli]
+----
+virsh pool-undefine <pool_nanme>
+----
+. ストレージプールがホストから削除されていることを確認してください：
++
+[source, cli]
+----
+virsh pool-list
+----
+. ストレージプールボリュームグループに属するすべての論理ボリュームが削除されていることを確認してください。
++
+.. 論理ボリュームを表示します：
++
+[source, cli]
+----
+lvs
+----
+.. プールに論理ボリュームが存在する場合は、それらを削除します：
++
+[source, cli]
+----
+lvremove <logical_volume_name>
+----
+
+
+. ボリュームグループが削除されたことを確認します。
++
+.. ボリューム グループを表示します。
++
+[source, cli]
+----
+vgs
+----
+.. プールにボリューム グループが存在する場合は、削除します：
++
+[source, cli]
+----
+vgremove <volume_group_name>
+----
+
+
+. 物理ボリュームが削除されていることを確認してください：
++
+.. 物理ボリュームを表示します：
++
+[source, cli]
+----
+pvs
+----
+.. プールに物理ボリュームが存在する場合は、それを削除します：
++
+[source, cli]
+----
+pvremove <physical_volume_name>
+----
+
+
+
+
+
+
+[[step-4-review-the-ontap-select-cluster-configuration]]
+== ステップ4：ONTAP Selectクラスタ構成を確認する
+
+ONTAP Selectは、マルチノードクラスタまたはシングルノード クラスタとして導入できます。多くの場合、追加のストレージ容量と高可用性（HA）機能があるため、マルチノードクラスタの方が望ましいです。
+
+次の図は、ESXiホストのシングルノード クラスタと4ノード クラスタで使用されるONTAP Selectネットワークを示しています。
+
+[role="tabbed-block"]
+====
+.シングルノードクラスタ
+--
+次の図は、シングルノード クラスタを示しています。外部ネットワークは、クライアント、管理、およびクラスタ間レプリケーションのトラフィックを伝送します（SnapMirror/SnapVault）。
+
+image:CHK_01.jpg["シングルノード クラスタで1つのネットワークを表示"]
+
+--
+.4ノードクラスタ
+--
+次の図は、2つのネットワークを示す4ノードクラスタを示しています。内部ネットワークは、ONTAPクラスタネットワークサービスをサポートするノード間の通信を可能にします。外部ネットワークは、クライアント、管理、およびクラスタ間レプリケーションのトラフィックを伝送します（SnapMirror/SnapVault）。
+
+image:CHK_02.jpg["4ノードクラスタに2つのネットワークを表示"]
+
+--
+.4ノードクラスタ内の単一ノード
+--
+次の図は、4ノードクラスタ内の単一のONTAP Select仮想マシンの典型的なネットワーク構成を示しています。2つの独立したネットワークが存在します：ONTAP内部とONTAP外部。
+
+image:CHK_03.jpg["4ノードクラスタ内の単一ノード"]
+
+--
+====
+
+
+[[step-5-configure-open-vswitch]]
+== ステップ5：Open vSwitchの設定
+
+各 KVM ホストノードで Open vSwitch を使用して、ソフトウェアで定義されるスイッチを構成します。
+
+.開始する前に
+ネットワークマネージャが無効になっていること、およびネイティブLinuxネットワーク サービスが有効になっていることを確認します。
+
+.タスク概要
+ONTAP Select には2つの独立したネットワークが必要であり、どちらのネットワークもポートボンディングを利用してネットワークのHA機能を提供します。
+
+.手順
+. ホストで Open vSwitch がアクティブであることを確認します。
++
+.. Open vSwitch が実行されているかどうかを確認します：
++
+[source, cli]
+----
+systemctl status openvswitch
+----
+.. Open vSwitch が実行されていない場合は、起動します：
++
+[source, cli]
+----
+systemctl start openvswitch
+----
+
+
+. Open vSwitch 設定を表示します：
++
+[source, cli]
+----
+ovs-vsctl show
+----
++
+Open vSwitch がホスト上でまだ設定されていない場合、設定は空に見えます。
+
+. 新しいvSwitchインスタンスを追加：
++
+[source, cli]
+----
+ovs-vsctl add-br <bridge_name>
+----
++
+次に例を示します。
+
++
+[source, cli]
+----
+ovs-vsctl add-br ontap-br
+----
+. ネットワーク インターフェイスを停止します：
++
+[source, cli]
+----
+ifdown <interface_1>
+ifdown <interface_2>
+----
+. リンク集約制御プロトコル（LACP）を使用してリンクを結合します。
++
+[source, cli]
+----
+ovs-vsctl add-bond <internal_network> bond-br <interface_1> <interface_2> bond_mode=balance-slb lacp=active other_config:lacp-time=fast
+----
++
+
+NOTE: 複数のインターフェースが存在する場合にのみ、ボンディングを設定する必要があります。
+
+. ネットワーク インターフェイスを起動します。
++
+[source, cli]
+----
+ifup <interface_1>
+ifup <interface_2>
+----
+

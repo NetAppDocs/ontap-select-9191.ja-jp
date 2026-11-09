@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_kvm.html 
+keywords: plan, planning, vnas, kvm 
+summary: KVMハイパーバイザーの使用に関連して検討すべき計画上の問題がいくつかあります。 
+---
+= ONTAP Select のKVM外部ストレージ要件
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+外部ストレージアレイを使用して、KVMハイパーバイザー上でONTAP Selectを設定できます。
+
+
+
+[[basic-requirements-and-restrictions]]
+== 基本的な要件と制限
+
+ONTAP Selectストレージプールに外部アレイを使用する場合、以下の構成上の制限が適用されます：
+
+* CLVMを使用して論理プールタイプとして定義する必要があります。
+* ストレージ容量の上限を指定する必要があります。
+* この構成では、FC、Fibre Channel over Ethernet（FCoE）、およびiSCSIプロトコルのみをサポートします。
+* この構成では、シンプロビジョニングされたストレージは認識されません。
+
+
+
+CAUTION: 指定するストレージ容量は、外部ストレージの許容ストレージ容量制限内である必要があります。ディスク作成操作中に容量制限を指定しなかった場合、または外部ストレージの空き容量が不足した場合にエラーが発生します。
+
+
+
+[[best-practices]]
+== ベストプラクティス
+
+次のベスト プラクティスに従う必要があります：
+
+* ONTAP Select ネットワークと外部ストレージ用の専用ネットワーク ポート、帯域幅、およびvSwitch構成を定義します
+* ストレージ使用量を制限するには、容量オプションを設定します（ONTAP Selectは外部ストレージプールの全容量を消費することはできません）
+* すべての外部ストレージアレイが、可能な限り利用可能な冗長性と高可用性（HA）機能を使用していることを確認してください。
+

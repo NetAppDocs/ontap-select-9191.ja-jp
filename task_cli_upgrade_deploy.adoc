@@ -1,0 +1,98 @@
+---
+sidebar: sidebar 
+permalink: task_cli_upgrade_deploy.html 
+keywords: administer, administering, cli, deploy, upgrade deploy 
+summary: コマンドラインインターフェイスを使用して、既存の Deploy ユーティリティ仮想マシンをインプレースでアップグレードできます。 
+---
+= ONTAP Select Deployインスタンスをアップグレードする
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select Deploy ユーティリティ CLI を使用して、既存の ONTAP Select Deploy ユーティリティ仮想マシンをインプレースでアップグレードします。
+
+ONTAP Select Deploy 9.18.1または9.17.1からONTAP Select Deploy 9.19.1に直接アップグレードできます。たとえば、ONTAP Select Deploy 9.16.1などの以前のリリースからアップグレードするには、まずONTAP Select Deploy 9.17.1または9.18.1にアップグレードしてから、ONTAP Select Deploy 9.19.1にアップグレードする必要があります。
+
+[NOTE]
+====
+ONTAP Select Deploy管理ユーティリティの古いインスタンスがインストールされている場合は、最新リリースにアップグレードする必要があります。ONTAP SelectノードとONTAP Select Deployコンポーネントは個別にアップグレードします。詳細については、link:concept_adm_upgrading_nodes.html["ONTAP Select ノードをアップグレードする"^]を参照してください。
+
+====
+.開始する前に
+アップグレード中にONTAP Select Deployが他のタスクの実行に使用されていないことを確認します。
+
+
+
+[[step-1-download-the-upgrade-package]]
+== ステップ1：アップグレードパッケージをダウンロードする
+
+アップグレードプロセスを開始するには、NetApp Support SiteからONTAP Select Deployアップグレードファイルをダウンロードします。アップグレードパッケージは、単一の圧縮ファイルとしてフォーマットされます。
+
+.手順
+. link:https://mysupport.netapp.com/site/downloads/["NetApp Support Site ダウンロード"^]ページにアクセスします。
+. 下にスクロールして*ONTAP Select Deploy*を選択してください。
+. 希望する ONTAP Select バージョンを選択してください。
+. エンドユーザー使用許諾契約（EULA）を確認し、*Accept & Continue*を選択してください。
+. 適切な*ONTAP Select Deploy Upgrade*パッケージを選択してダウンロードします。必要に応じてすべてのプロンプトに応答します。
+
+
+
+
+[[step-2-upload-the-package-to-the-ontap-select-deploy-virtual-machine]]
+== ステップ2：パッケージをONTAP Select Deploy仮想マシンにアップロードする
+
+パッケージをダウンロードしたら、ONTAP Select Deploy仮想マシンにファイルをアップロードする必要があります。
+
+.タスク概要
+このタスクでは、ONTAP Select Deploy仮想マシンにファイルをアップロードする1つの方法について説明します。ご使用の環境により適した他のオプションがある可能性があります。
+
+.開始する前に
+* アップグレード ファイルがローカル ワークステーションで使用可能であることを確認します。
+* 管理者ユーザーアカウントのパスワードがあることを確認します。
+
+
+.手順
+ローカルワークステーションのコマンドシェルで、 `scp`（Secure Copy Protocol）ユーティリティを使用して、次の例に示すように、画像ファイルをONTAP Select Deploy仮想マシンにアップロードします：
+
+....
+scp ONTAPdeploy2.12_upgrade.tar.gz admin@10.228.162.221:/home/admin (provide password when prompted)
+....
+.結果
+アップグレードファイルは、admin ユーザーのホームディレクトリに保存されます。
+
+
+
+[[step-3-apply-the-upgrade-package]]
+== ステップ3：アップグレードパッケージを適用する
+
+アップグレードファイルをONTAP Select Deploy仮想マシンにアップロードした後、アップグレードを適用できます。
+
+.開始する前に
+* ONTAP Select Deploy ユーティリティ仮想マシンで、アップグレードファイルが配置されているディレクトリを確認します。
+* アップグレードの実行中は、ONTAP Select Deployが他のタスクの実行に使用されていないことを確認してください。
+
+
+.手順
+. 管理者アカウントを使用して、SSHでONTAP Select DeployユーティリティCLIにサインインします。
+. 適切なディレクトリパスとファイル名を使用してアップグレードを実行します：
++
+[source, cli]
+----
+deploy upgrade -package-path <file_path>
+----
++
+コマンド例：
+
++
+....
+deploy upgrade -package-path /home/admin/ONTAPdeploy2.12_upgrade.tar.gz
+....
+
+
+.終了後の操作
+アップグレード手順が完了する前に、ONTAP Select Deploy仮想マシン構成のバックアップを作成するように求められます。また、新しく作成されたONTAP Select Deployページを表示するには、ブラウザのキャッシュをクリアする必要があります。

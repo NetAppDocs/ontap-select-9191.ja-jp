@@ -1,0 +1,45 @@
+---
+sidebar: sidebar 
+permalink: task_lic_acquire_ct.html 
+keywords: license, licensing, acquire, Capacity Tiers 
+summary: 容量階層ライセンスを使用する場合は、ONTAP Selectノードごとにライセンスファイルを取得する必要があります。ライセンスファイルはノードのストレージ容量を定義し、NetAppによって割り当てられた固有の9桁のシリアル番号によってノードにロックされます。 
+---
+= ONTAP Select容量ティアライセンスを取得する
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+容量階層ライセンスを使用する場合は、ONTAP Selectノードごとにライセンスファイルを取得する必要があります。ライセンスファイルはノードのストレージ容量を定義し、NetAppによって割り当てられた固有の9桁のシリアル番号によってノードにロックされます。
+
+.開始する前に
+* NetAppによってONTAP Selectノードに割り当てられた9桁のライセンス シリアル番号が必要です。
+* ライセンス ファイルを取得する前に、注文書の発送日から少なくとも 24 時間待つ必要があります。
+* link:sizing-capacity-tier-license.html["容量階層ライセンスのサイジングに関する考慮事項"]をレビューしました。
+
+
+.タスク概要
+Capacity Tiers ライセンスを必要とする ONTAP Select ノードごとにこのタスクを実行する必要があります。
+
+.手順
+. link:https://register.netapp.com/register/getlicensefile["ONTAP Selectライセンスサイトにアクセスする"^]。
+. NetAppアカウントのクレデンシャルを使用してサインインします。
+. *License Generator* ページで、ドロップダウンボックスから希望するライセンス製品を選択します。
+. *製品シリアル番号*を含む、*ライセンス ジェネレーター* ページの残りのフィールドに入力します。
++
+「製品シリアル番号」は、ONTAP Selectノードのシリアル番号です。
+
+. *Submit* を選択します。
+. リクエストが検証されたら、ライセンスの配信方法を選択します。
++
+*ライセンスのダウンロード*または*ライセンスのメール送信*のいずれかを選択できます。
+
+. 選択した配信方法に基づいてライセンスファイルを受信したことを確認します。
+
+
+.終了後の操作
+ライセンスファイルを ONTAP Select ノードに適用する前に、 Deploy 管理ユーティリティにアップロードする必要があります。

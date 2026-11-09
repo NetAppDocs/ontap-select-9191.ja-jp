@@ -1,0 +1,60 @@
+---
+sidebar: sidebar 
+permalink: concept_adm_upgrading_nodes.html 
+keywords: administer, administering, web, upgrading nodes 
+summary: ONTAP Select クラスタを導入したあとは、標準の ONTAP ソフトウェアアップグレード手順を使用して、必要に応じて各ノードの ONTAP イメージをアップグレードできます。 
+---
+= ONTAP Selectノードをアップグレードする
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select クラスタを導入した後、必要に応じてクラスタ内の各ノードで ONTAP イメージをアップグレードできます。
+
+
+CAUTION: Deploy管理ユーティリティを使用して、既存のONTAP Selectノードのアップグレードを実行することはできません。Deployユーティリティは、新しいONTAP Selectクラスタの作成にのみ使用できます。
+
+
+
+[[general-procedure]]
+== 一般的な手順
+
+大まかに言うと、既存の ONTAP Select ノードをアップグレードするには、以下の手順を使用する必要があります。
+
+.手順
+. link:https://mysupport.netapp.com/site/downloads/["NetApp Support Site ダウンロード"^]ページにアクセスします。
+. 下にスクロールして、* ONTAP Select Image *を選択します。
+. インストールイメージの目的のリリースを選択します。
+. エンドユーザー使用許諾契約（EULA）を確認し、*Accept & Continue*を選択してください。
+. 適切な*ONTAP Select Image Upgrade*パッケージを選択してダウンロードしてください。必要に応じてすべてのプロンプトに応答します。
++
+ONTAP Selectノードをアップグレードする前に、link:reference_release_notes.html["リリース ノート"]で追加情報と必要な手順を確認してください。
+
+. ONTAP Select アップグレード ファイルを使用して、標準の ONTAP アップグレード手順で ONTAP Select ノードをアップグレードします。サポートされているアップグレード パスの詳細については、link:https://docs.netapp.com/us-en/ontap/upgrade/concept_upgrade_paths.html["サポートされるONTAPのアップグレード パス"^]を参照してください。
+
+
+
+
+[[revert-an-ontap-select-node]]
+== ONTAP Selectノードを元に戻す
+
+ONTAP Selectノードを、最初にインストールされたバージョンより前のバージョンに戻すことはできません。次に例を示します。
+
+ONTAP Select 9.16.1が最初にインストールされます:: ノードをバージョン9.17.1にアップグレードした後、必要に応じてバージョン9.16.1に戻すことができます。
+ONTAP Select 9.17.1が最初にインストールされます:: 以前のバージョンがインストールされていなかったため、元に戻すことはできません。
+
+
+
+
+[[use-the-vmxnet3-network-driver]]
+== VMXNET3 ネットワーク ドライバを使用する
+
+VMXNET3は、VMware ESXi上で新規クラスタをデプロイする際にデフォルトで含まれるネットワークドライバです。ONTAP Select 9.4以前を実行している既存のONTAP Selectノードをアップグレードする場合、ネットワークドライバは自動的にアップグレードされません。VMXNET3へのアップグレードは手動で行う必要があります。アップグレードに関するサポートについては、NetAppサポートにお問い合わせください。
+
+.関連情報
+link:https://docs.netapp.com/us-en/ontap/upgrade/index.html["ONTAPのアップグレードの概要"^]

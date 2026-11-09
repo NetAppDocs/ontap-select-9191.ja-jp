@@ -1,0 +1,69 @@
+---
+sidebar: sidebar 
+permalink: deploy-evaluation-ontap-select-ovf-template.html 
+keywords: ontap, select, ovf, template, deployment, evaluation, license 
+summary: シングルノード ONTAP Select クラスタの90日間評価インスタンスをデプロイできます。 
+---
+= ONTAP Select クラスタの 90 日間の評価インスタンスをデプロイします
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+VMware ESXi上でOVFテンプレートを使用して、シングルノードから最大99ノードまでの規模のONTAP Selectクラスタの90日間評価インスタンスをデプロイできます。既存のお客様、新規のお客様を問わず、評価版ライセンスをダウンロードできます。例えば、既存のお客様で、ライセンスを購入する前に新しい構成を試してみたい場合などです。
+
+.タスク概要
+* NetAppからシリアル番号やストレージ容量ライセンスを取得する必要はありません。
+* 購入したライセンスと同量のストレージをユーザデータに割り当てることができます。
+* OVFテンプレートをデプロイするには、vCenterアカウントのみを使用できます。ESXiホストへの直接インストールは現在サポートされていません。
+* OVFテンプレート（ovaファイルに含まれる）をインストールするには、vSphereスタンドアロンクライアントまたはvSphere Webクライアント（ESXi 8.0以降では唯一の選択肢）を使用する必要があります。ONTAP Select Deploy管理ユーティリティは使用しません。
+
+
+
+
+[[step-1-prepare-the-ontap-select-cluster-host]]
+== ステップ1：ONTAP Selectクラスタホストを準備する
+
+ONTAP Select クラスタを導入する ESXi ホストを準備するには、次の要件を使用します。プラットフォームの説明は、VMFS-5 または VMFS-6 ファイルシステムを使用してフォーマットされたローカルの直接接続ストレージ（DAS）を備えた、標準または小規模インスタンスタイプの構成に基づいています。
+
+image:prepare_ESXi_host_requirements.png["ESXiホストを準備するための要件"]
+
+ホスト構成オプションの詳細については、link:esxi-host-configuration-and-preparation-checklist.html["ONTAP Select インストールドキュメント"]を参照してください。
+
+
+
+[[step-2-deploy-a-single-node-ontap-select-cluster-using-an-ovf-template]]
+== ステップ2：OVFテンプレートを使用したシングルノード ONTAP Select クラスタのデプロイ
+
+サポートされている64ビットESXiホストサーバーで、以下の手順を実行してください。
+
+.手順
+. NetApp Evaluation Products Program ページに移動し、*ONTAP Select* を選択して ONTAP Select OVF テンプレートをローカルワークステーションにダウンロードします。
+. 管理者権限を持つアカウントを使用して、VMware vSphere Webクライアントにサインインします。
+. 次のいずれかのオプションを使用してホストを選択します。
++
+** *File* > *Deploy OVF Template* を選択します。
+** *Datacenter* を選択します。次に右クリックして *Deploy OVF Template* を選択します。
+
+
+. ローカルワークステーション上のONTAP SelectソースOVAファイルを選択し、*次へ*を選択します。
+. OVF テンプレートの詳細を確認し、* Next * を選択します。
+. EULA の詳細を確認し、* Accept * を選択します。次に「次へ」を選択します。
+. 新しい仮想マシンの名前を入力し、*Next* を選択します。
+. 複数のデータストアが利用可能な場合は、データストアを選択して *Next* を選択します。
+. *Thick Provision Lazy Zeroed* を選択し、 *Next* を選択します。
+. データネットワークと管理ネットワークを選択し、* Next *を選択します。
+. *Properties* ページで、必要な値をすべて入力し、 *Next* を選択します。
+. 導入の詳細を確認し、* Power on after deployment * を選択します。
+. デプロイプロセスを開始するには、*Finish* を選択してください。
+. ONTAP Select クラスタの導入後、System Manager または CLI インターフェイスを使用してクラスタを設定できます。標準の ONTAP *disk assign* 操作を使用してディスクを割り当てる必要があります。
+
+
+.関連情報
+* link:concept_lic_evaluation.html["ONTAP Select 導入の評価ライセンスについて説明します"]
+* link:http://mysupport.netapp.com/matrix["Interoperability Matrix Tool"^]
+

@@ -1,0 +1,61 @@
+---
+sidebar: sidebar 
+permalink: concept_lic_cp_compare_ct.html 
+keywords: license, licensing, Capacity Pools, Capacity Tiers, comparing 
+summary: Capacity Tiers と Capacity Pools のライセンス モデルにはいくつかの違いがあります。 
+---
+= ONTAP Select容量階層と容量プールのライセンス比較
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+以下の表は、ONTAP Selectでサポートされている2つのプロダクションライセンスモデルを比較したものです。
+
+[cols="20,40,40"]
+|===
+|  | 容量階層 | 容量プール 
+
+
+| ライセンスのシリアル番号 | NetApp は9桁の数字を生成し、ノードに割り当てる | NetAppは9桁の数字を生成し、それを容量プールに割り当てます 
+
+
+| ライセンスロック | ONTAP Selectノードにロック済み | License Managerインスタンスにロックされています 
+
+
+| ライセンス期間 | 永久（更新不要） | 購入に基づく固定期間（更新が必要） 
+
+
+| データ アグリゲートのリース期間 | 該当なし | 1時間から7日間 
+
+
+| ノードのシリアル番号 | 9桁の数字で、ライセンスのシリアル番号と同じです。 | 20桁の数字でライセンスマネージャーによって生成されます 
+
+
+| サポート | アドオンおよび期間限定 | 含まれており、同一期間 
+
+
+| ライセンス タイプ | Standard、Premium、Premium XL | Standard、Premium、Premium XL 
+
+
+| 評価ライセンスが利用可能です | はい | はい 
+
+
+| 評価版から本番環境へのアップグレード | はい | × 
+
+
+| ONTAP Select仮想マシンのサイズ変更（小→中、中→大） | はい | はい 
+
+
+| 適用：ライセンスの有効期限切れ | 該当なし | はい（猶予期間なし） 
+
+
+| 最小ライセンス | 1 TB | 2 TB 
+
+
+| 最大管理スペース | ノードあたり400TB | ノードあたり400TB 
+|===

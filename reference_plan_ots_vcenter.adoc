@@ -1,0 +1,92 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_vcenter.html 
+keywords: plan, planning, vmware vcenter, vcenter server, vcenter 
+summary: VMware vCenterに関連する計画要件がいくつかあります。 
+---
+= ESXi上のONTAP Select VMware vCenterサーバ
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+vCenterサーバーアカウントを定義し、必要な管理権限を含むロールに関連付ける必要があります。
+
+
+NOTE: また、ONTAP Selectが導入されているESXiハイパーバイザーホストを管理するvCenterサーバーの完全修飾ドメイン名またはIPアドレスも必要です。
+
+
+
+[[administrative-privileges]]
+== 管理者権限
+
+ONTAP Select クラスタの作成と管理に必要な最小限の管理者権限を以下に示します。
+
+
+
+[[datastore]]
+=== データストア
+
+* Allocate space
+* Browse datastore
+* Low level file operations
+* Update virtual machine files
+* 仮想マシンのメタデータを更新する
+
+
+
+
+[[host]]
+=== ホスト
+
+構成::
++
+--
+* ネットワーク設定
+* システム管理
+
+
+--
+ローカル操作::
++
+--
+* Create virtual machine
+* Delete virtual machine
+* Reconfigure virtual machine
+
+
+--
+
+
+
+
+[[network]]
+=== Network
+
+* Assign network
+
+
+
+
+[[virtual-machine]]
+=== 仮想マシン
+
+構成:: カテゴリ内のすべての権限。
+インタラクション:: カテゴリ内のすべての権限。
+インベントリ:: カテゴリ内のすべての権限。
+プロビジョニング:: カテゴリ内のすべての権限。
+
+
+
+
+[[vapp]]
+=== vApp
+
+カテゴリ内のすべての権限。
+
+.関連情報
+link:reference_plan_dep_vmware.html#vmware-vcenter-server-considerations["vCenterでのvSAN ESA向けのVMware vSphereの権限について"]

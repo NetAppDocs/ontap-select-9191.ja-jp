@@ -1,0 +1,35 @@
+---
+sidebar: sidebar 
+permalink: reference_plan_ots_robo.html 
+keywords: plan, planning, remote and branch office, robo 
+summary: ONTAP Selectは、リモートオフィス/ブランチオフィス（ROBO）環境に導入できます。ROBO導入の計画の一環として、目的をサポートする構成を選択する必要があります。 
+---
+= ONTAP Selectのリモートオフィスおよびブランチオフィスへの導入
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectは、リモートオフィス/ブランチオフィス（ROBO）環境に導入できます。ROBO導入の計画の一環として、目的をサポートする構成を選択する必要があります。
+
+ROBO環境にONTAP Selectを導入する場合、2つの主要な構成を使用できます。
+
+
+NOTE: ONTAP Select の導入時には、任意の VMware vSphere ライセンスを使用できます。
+
+.ONTAP Select 2ノードクラスタとONTAP HA
+ONTAP Select 2ノードクラスタは1組のHAペアで構成され、ROBO展開に最適です。
+
+.VMwareサポート付きONTAP Selectシングルノード クラスタ
+ROBO環境にONTAP Selectシングルノード クラスタを導入できます。シングルノードにはネイティブなHA機能はありませんが、ストレージ保護を提供するために、次のいずれかの方法でクラスタを導入できます：
+
+* VMware HAを使用した共有外部ストレージ
+* VMware vSAN
+
+
+
+NOTE: vSANを使用する場合は、VMware vSAN ROBOライセンスが必要です。

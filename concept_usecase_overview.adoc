@@ -1,0 +1,66 @@
+---
+sidebar: sidebar 
+permalink: concept_usecase_overview.html 
+keywords: ontap select, business use case overview, deployment, storage, development and testing 
+summary: ONTAP Selectは、ハイパーバイザー仮想化によって提供される固有の柔軟性に基づいて、いくつかの異なるタイプのアプリケーションに適しています。 
+---
+= ONTAP Select のビジネスニーズと利用シナリオ
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Selectは、ハイパーバイザー仮想化によって提供される固有の柔軟性に基づいて、いくつかの異なるタイプのアプリケーションに適しています。
+
+
+
+[[deployment]]
+== 導入
+
+大まかに言えば、ハイパーバイザーホストサーバー上のワークロードに関して、ONTAP Selectを2つの異なる方法で導入できます。
+
+
+
+[[dedicated-deployment]]
+=== 専用導入
+
+専用デプロイメント モデルでは、ONTAP Select の単一のインスタンスがホスト サーバ上で実行されます。同じハイパーバイザー ホスト上で他の重要な処理は実行されません。
+
+
+
+[[collocated-deployment]]
+=== コロケーション展開
+
+併設型展開モデルでは、ONTAP Selectホストを他のワークロードと共有します。具体的には、それぞれが通常、計算アプリケーションを実行する追加の仮想マシンが存在します。これらの計算ワークロードは、ONTAP Selectクラスタに対してローカルです。このモデルは、特殊なアプリケーションおよび展開要件に対応しています。専用展開モデルと同様に、各ONTAP Select仮想マシンは、別の専用ハイパーバイザーホスト上で実行する必要があります。
+
+
+
+[[storage]]
+== ストレージ
+
+ONTAP Selectは、ビジネスニーズに応じて、プライマリストレージとしてもセカンダリストレージとしても使用できます。
+
+
+
+[[primary-storage]]
+=== プライマリ ストレージ
+
+場合によっては、ONTAP Selectをプライマリストレージプラットフォームとして導入することを選択できます。これらのタイプの実装は、アプリケーションのワークロード特性やビジネス目標によって異なります。
+
+
+
+[[disaster-recovery-and-secondary-storage]]
+=== ディザスタリカバリとセカンダリストレージ
+
+ONTAP Selectを使用して、プライマリストレージの機能を拡張する追加ストレージを導入できます。追加のストレージ容量は、組織の災害復旧活動やデータバックアップ計画を支援するために活用できます。
+
+
+
+[[development-and-testing]]
+== 開発とテスト
+
+組織内でさまざまなアプリケーションを展開する際に、ONTAP Selectをアプリケーション開発およびテストプロセス全体の不可欠な要素として使用できます。例えば、テストの入力データや出力データを一時的に保存するためのストレージが必要になる場合があります。こうしたタイプの導入にかかる期間は、アプリケーションの特性や要件によって異なります。

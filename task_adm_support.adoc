@@ -1,0 +1,112 @@
+---
+sidebar: sidebar 
+permalink: task_adm_support.html 
+keywords: administer, administering, web, diagnostics, support 
+summary: ONTAP Select の管理の一環として実行できる関連する診断およびサポートタスクがいくつかあります。 
+---
+= ONTAP Select の診断とサポートの管理
+:hardbreaks:
+:allow-uri-read: 
+:nofooter: 
+:icons: font
+:linkattrs: 
+:imagesdir: ./media/
+
+
+[role="lead"]
+ONTAP Select の管理の一環として実行できる関連する診断およびサポートタスクがいくつかあります。
+
+
+
+[[configure-the-deploy-system]]
+== Deployシステムを構成する
+
+Deployユーティリティの動作に影響を与える基本的なシステム構成パラメータを設定する必要があります。
+
+.タスク概要
+デプロイ構成データは、AutoSupportによって使用されます。
+
+.手順
+. 管理者アカウントを使用して、デプロイユーティリティのWebユーザーインターフェースにサインインしてください。
+. ページ上部の*Administration*タブを選択してください。
+. *設定とAutoSupport*を選択し、image:icon_pencil.gif["Edit"]を選択します。
+. ご使用の環境に合わせて適切な設定データを入力し、*変更*を選択してください。
++
+プロキシ サーバを使用する場合は、プロキシURLを次のように設定できます：
+`\http://USERNAME:PASSWORD@<FQDN|IP>:PORT`
+
++
+例
+`\http://user1:mypassword@proxy.company-demo.com:80`
+
+
+
+
+
+[[display-the-ontap-select-deploy-event-messages]]
+== ONTAP Select Deployイベントメッセージを表示する
+
+ONTAP Select Deployユーティリティには、システムのアクティビティに関する情報を提供するイベントロギング機能が含まれています。問題のデバッグを行う場合、またはサポート担当者から指示があった場合は、イベントログの内容を確認してください。
+
+.タスク概要
+イベントメッセージのリストは、次のような複数の特性に基づいてフィルタリングできます。
+
+* ステータス
+* Type
+* カテゴリ
+* Instance
+* Time
+* 説明
+
+
+.手順
+. 管理者アカウントを使用して、デプロイユーティリティのWebユーザーインターフェースにサインインしてください。
+. ページ上部の*Administration*タブを選択してください。
+. *Events & Jobs* を選択し、次に *Events* を選択します。
+. 必要に応じて、*Filter*を選択し、表示されるイベントメッセージを制限するためのフィルターを作成します。
+
+
+
+
+[[enable-autosupport]]
+== AutoSupportを有効にする
+
+必要に応じてAutoSupport機能を有効または無効にすることができます。
+
+.タスク概要
+AutoSupportは、NetAppがONTAP Selectをサポートする際に使用する主要なトラブルシューティングツールです。したがって、どうしても必要な場合を除き、AutoSupportを無効にしないでください。AutoSupportを無効にした場合でも、データは引き続き収集されますが、NetAppには送信されません。
+
+.手順
+. 管理者アカウントを使用して、デプロイユーティリティのWebユーザーインターフェースにサインインしてください。
+. ページ上部の*Administration*タブを選択してください。
+. *Settings & AutoSupport* を選択し、image:icon_kebab.gif["Options"]を選択します。
+. 必要に応じてAutoSupport機能を有効または無効にします。
+
+
+
+
+[[generate-and-download-an-autosupport-package]]
+== AutoSupportパッケージを生成してダウンロードします
+
+ONTAP Selectには、AutoSupportパッケージを生成する機能が含まれています。問題のデバッグを行うため、またはサポートから指示があった場合は、パッケージを生成してください。
+
+.タスク概要
+NetAppサポートの指示とガイダンスに従って、次のAutoSupportパッケージを生成できます。
+
+* デプロイログ ONTAP Select Deployユーティリティによって作成されたログファイル
+* トラブルシューティング ハイパーバイザーホストとONTAP Selectノードに関するトラブルシューティングとデバッグ情報
+* パフォーマンス ハイパーバイザー ホストと ONTAP Select ノードに関するパフォーマンス情報
+
+
+.手順
+. 管理者アカウントを使用して、デプロイユーティリティのWebユーザーインターフェースにサインインしてください。
+. ページ上部の*Administration*タブを選択してください。
+. *Settings & AutoSupport* を選択し、image:icon_kebab.gif["Options"]を選択します。
+. 「生成」を選択します。
+. パッケージのタイプを選択し、説明を入力します。必要に応じて、ケース番号を入力することもできます。
+. 「生成」を選択します。
++
+各AutoSupportパッケージには、固有のシーケンス識別番号が割り当てられます。
+
+. 必要に応じて、*AutoSupport 履歴*で適切なパッケージを選択し、ダウンロードアイコンを選択して AutoSupport ファイルをローカルワークステーションに保存します。
+

@@ -1,0 +1,313 @@
+---
+settings:
+  name: ONTAP Select
+  downlevel: true
+  harmony_integration: maestro
+  internal:
+    pdf_enabled: true
+    lipi_enabled: true
+  prod:
+    pdf_enabled: true
+    harmony_enabled: false
+  versions:
+  - version-number: 9.19.1
+    url: "/ontap-select-9191"
+  - version-number: 9.20.1
+    url: "/ontap-select"
+  - version-number: 9.18.1
+    url: "/ontap-select-9181"
+  - version-number: 9.17.1
+    url: "/ontap-select-9171"
+  - version-number: 9.16.1
+    url: "/ontap-select-9161"
+  langs: ja-jp,us-en,de-de,es-es,fr-fr,it-it,pt-br,ko-kr,zh-cn,zh-tw
+sidebar:
+  entries:
+  - title: ONTAP Select 9.19.1 ドキュメント
+    url: "/index.html"
+  - title: リリース ノート
+    entries:
+    - title: ONTAP Selectリリースノート
+      url: "/reference_release_notes.html"
+    - title: 新機能
+      url: "/reference_new_ots.html"
+  - title: 概念
+    entries:
+    - title: ONTAP Select
+      url: "/concept_ots_overview.html"
+    - title: ONTAP Select Deploy
+      url: "/concept_ots_deploy.html"
+    - title: ビジネスユースケース
+      entries:
+      - title: ビジネスニーズと使用シナリオ
+        url: "/concept_usecase_overview.html"
+      - title: リモートオフィスおよび支店
+        url: "/concept_usecase_robo.html"
+      - title: プライベートクラウドとデータセンター
+        url: "/concept_usecase_private_cloud.html"
+      - title: データ保護と効率性
+        url: "/concept-data-protection-and-efficiency.html"
+    - title: 用語
+      url: "/concept_terminology.html"
+  - title: Plan
+    entries:
+    - title: 導入ワークフロー
+      url: "/concept_workflow_deploy.html"
+    - title: ONTAP Select
+      entries:
+      - title: 一般要件
+        url: "/reference_plan_ots_general.html"
+      - title: ハイパーバイザーとハードウェア
+        url: "/reference_plan_ots_hardware.html"
+      - title: ストレージとRAID
+        url: "/reference_plan_ots_storage.html"
+      - title: 外部ストレージの要件
+        entries:
+        - title: VMware ESXi
+          url: "/reference_plan_ots_vnas.html"
+        - title: KVM
+          url: "/reference_plan_ots_kvm.html"
+      - title: ネットワーク
+        url: "/reference_plan_ots_networking.html"
+      - title: 2 ノードクラスタ
+        url: "/reference_plan_ots_two_node.html"
+      - title: リモートオフィスおよびブランチオフィス
+        url: "/reference_plan_ots_robo.html"
+      - title: MetroCluster SDS
+        url: "/reference_plan_ots_mcc_sds.html"
+      - title: ESXi上のVMware vCenter
+        url: "/reference_plan_ots_vcenter.html"
+    - title: ONTAP Select Deploy
+      entries:
+      - title: 一般要件
+        url: "/reference_plan_dep_general.html"
+      - title: ハイパーバイザーホスト環境
+        url: "/reference_plan_dep_vmware.html"
+    - title: ベストプラクティス
+      url: "/reference_plan_best_practices.html"
+  - title: ライセンス
+    entries:
+    - title: Options
+      entries:
+      - title: 評価ライセンス
+        url: "/concept_lic_evaluation.html"
+      - title: 本番ライセンス
+        entries:
+        - title: 本番ライセンスについて学ぶ
+          url: "/concept_lic_production.html"
+        - title: プラットフォームライセンスの提供内容
+          url: "/concept_lic_platforms.html"
+        - title: Capacity Poolsライセンス モデル
+          entries:
+          - title: 運用の詳細
+            url: "/concept_lic_cp_operation.html"
+          - title: ノードのシリアル番号
+            url: "/concept_lic_cp_serial_number.html"
+          - title: 制限事項
+            url: "/concept_lic_cp_restrictions.html"
+          - title: 給付内容の概要
+            url: "/concept_lic_cp_benefits.html"
+        - title: 容量階層と容量プール
+          url: "/concept_lic_cp_compare_ct.html"
+    - title: ライセンスを購入する
+      entries:
+      - title: ライセンスワークフロー
+        url: "/concept_lic_workflow.html"
+      - title: 容量階層
+        entries:
+        - title: 容量ティアのライセンスサイズを決定する
+          url: "/sizing-capacity-tier-license.html"
+        - title: ライセンスを取得する
+          url: "/task_lic_acquire_ct.html"
+      - title: 容量プール
+        entries:
+        - title: キャパシティプールのライセンスサイズを決定する
+          url: "/sizing-capacity-pool-license.html"
+        - title: ライセンスを取得する
+          url: "/task_lic_acquire_cp.html"
+    - title: ONTAPの機能
+      url: "/reference_lic_ontap_features.html"
+  - title: インストール
+    entries:
+    - title: インストール前のチェックリスト
+      entries:
+      - title: ホスト準備チェックリスト
+        entries:
+        - title: KVMホストチェックリスト
+          url: "/kvm-host-configuration-and-preparation-checklist.html"
+        - title: ESXiホストチェックリスト
+          url: "/esxi-host-configuration-and-preparation-checklist.html"
+      - title: ユーティリティの導入に必要な情報
+        url: "/reference_chk_deploy_req_info.html"
+      - title: ONTAP Select の必須情報
+        url: "/reference_chk_select_req_info.html"
+      - title: NVMe ホスト構成
+        url: "/task_chk_nvme_configure.html"
+    - title: ONTAP Select Deployのインストール
+      url: "/task_install_deploy.html"
+    - title: クラスタを導入する
+      url: "/task_deploy_cluster.html"
+    - title: 初期クラスタの状態
+      url: "/reference_initial_state.html"
+  - title: 管理
+    entries:
+    - title: 開始する前に
+      url: "/concept_adm_before.html"
+    - title: ノードのアップグレード
+      url: "/concept_adm_upgrading_nodes.html"
+    - title: 診断とサポート
+      url: "/task_adm_support.html"
+    - title: ONTAP Selectのセキュリティ保護
+      url: "/task_adm_security.html"
+    - title: ネットワーク接続を確認する
+      url: "/task_adm_connectivity.html"
+    - title: メディエーターサービスを管理する
+      url: "/task_adm_mediators.html"
+    - title: クラスタ
+      entries:
+      - title: クラスタを管理します。
+        url: "/task_adm_clusters.html"
+      - title: クラスタを拡張または縮小する
+        url: "/task_cluster_expansion_contraction.html"
+    - title: ノードとホスト
+      entries:
+      - title: VMビデオコンソールへのアクセス
+        url: "/task_adm_video_console.html"
+      - title: クラスタノードのサイズを変更する
+        url: "/task_adm_resize.html"
+      - title: 故障したソフトウェアRAIDドライブを交換する
+        url: "/task_adm_replace_drives_swraid.html"
+      - title: VMFS6にアップグレード
+        url: "/task_adm_upgrade_vmfs6.html"
+    - title: ライセンスを管理します。
+      url: "/task_adm_licenses.html"
+  - title: 詳細分析
+    entries:
+    - title: ストレージ
+      entries:
+      - title: 一般的な概念と特性
+        url: "/concept_stor_concepts_chars.html"
+      - title: ローカル接続ストレージ向けのハードウェアRAIDサービス
+        url: "/concept_stor_hwraid_local.html"
+      - title: ローカル接続ストレージ用のソフトウェアRAIDサービス
+        url: "/concept_stor_swraid_local.html"
+      - title: VSANと外部アレイ構成
+        url: "/concept_stor_vsan_external.html"
+      - title: ストレージ容量を増やす
+        url: "/concept_stor_capacity_inc.html"
+      - title: ストレージ効率のサポート
+        url: "/concept_stor_eff_support.html"
+    - title: ネットワーク
+      entries:
+      - title: 一般的な概念と特性
+        url: "/concept_nw_concepts_chars.html"
+      - title: シングルノードおよびマルチノード構成
+        url: "/concept_nw_single_multi_node.html"
+      - title: 内部ネットワークと外部ネットワーク
+        url: "/concept_nw_internal_external.html"
+      - title: サポートされている構成
+        url: "/concept_nw_supported_configs.html"
+      - title: VMware vSphere VSwitch の設定
+        url: "/concept_nw_vsphere_vswitch_config.html"
+      - title: 物理スイッチの構成
+        url: "/concept_nw_physical_switch_config.html"
+      - title: データと管理の分離
+        url: "/concept_nw_data_mgmt_separation.html"
+    - title: 高可用性アーキテクチャ
+      entries:
+      - title: HAの構成
+        url: "/concept_ha_config.html"
+      - title: 同期レプリケーションとミラーアグリゲート
+        url: "/concept_ha_mirroring.html"
+      - title: その他の高可用性機能
+        url: "/concept_ha_other.html"
+    - title: Performance
+      url: "/concept_perf_general.html"
+  - title: RESTを使用して自動化する
+    entries:
+    - title: 概念
+      entries:
+      - title: REST Webサービス
+        url: "/concept_api_rest.html"
+      - title: Deploy APIにアクセスする
+        url: "/concept_api_how_access.html"
+      - title: 基本操作
+        url: "/concept_api_operation.html"
+      - title: リクエストとレスポンスのトランザクション
+        url: "/concept_api_transaction.html"
+      - title: 非同期処理
+        url: "/concept_api_async_proc.html"
+    - title: ブラウザでアクセス
+      entries:
+      - title: 開始する前に
+        url: "/concept_api_before_browser.html"
+      - title: ドキュメントページにアクセスする
+        url: "/task_api_access_doc_page.html"
+      - title: API呼び出しを理解する
+        url: "/task_api_understanding_call.html"
+    - title: ワークフロープロセス
+      entries:
+      - title: 開始する前に
+        url: "/concept_api_before_workflows.html"
+      - title: ESXi上にクラスタを作成する
+        url: "/reference_api_workflow.html"
+    - title: Pythonでアクセス
+      entries:
+      - title: 開始する前に
+        url: "/concept_api_before_python.html"
+      - title: スクリプトを理解する
+        url: "/concept_api_understanding_scripts.html"
+    - title: Pythonコードサンプル
+      entries:
+      - title: クラスタを作成するためのスクリプト
+        url: "/reference_api_script_cc.html"
+      - title: クラスタを作成するための JSON
+        url: "/reference_api_json_cc.html"
+      - title: ノードライセンスを追加する
+        url: "/reference_api_script_anl.html"
+      - title: クラスタを削除
+        url: "/reference_api_script_dc.html"
+      - title: 共通サポートモジュール
+        url: "/reference_api_script_common.html"
+      - title: クラスタノードのサイズを変更する
+        url: "/reference_api_script_resize.html"
+  - title: CLI を使用する
+    entries:
+    - title: SSHを使用してサインインします
+      url: "/task_cli_signing_in.html"
+    - title: クラスタを導入する
+      url: "/task_cli_deploy_cluster.html"
+    - title: セキュリティ
+      url: "/task_cli_security.html"
+    - title: ネットワーク接続
+      url: "/task_cli_connectivity.html"
+    - title: クラスタを管理します。
+      url: "/task_cli_clusters.html"
+    - title: ノードとホスト
+      entries:
+      - title: ESXiをアップグレードする
+        url: "/cli-upgrade-esxi.html"
+      - title: ホスト管理サーバを変更する
+        url: "/reference_host_modify_command.html"
+    - title: Deploy ユーティリティ
+      entries:
+      - title: Deployインスタンスをアップグレードする
+        url: "/task_cli_upgrade_deploy.html"
+      - title: Deployインスタンスを移行する
+        url: "/task_cli_migrate_deploy.html"
+      - title: ONTAP Select イメージを追加
+        url: "/task_cli_deploy_image_add.html"
+      - title: ONTAP Select イメージを削除します
+        url: "/task_cli_deploy_image_remove.html"
+      - title: 2ノードクラスタのDeployのリカバリ
+        url: "/task_cli_deploy_recover_two_node.html"
+  - title: ONTAP Selectを試す
+    entries:
+    - title: 評価版ソフトウェアへのアクセス
+      url: "/access-evaluation-software.html"
+    - title: クラスタの90日間評価インスタンスを導入する
+      url: "/deploy-evaluation-ontap-select-ovf-template.html"
+  - title: FAQ
+    url: "/reference_faq.html"
+  - title: 法律上の表示
+    url: "/legal-notices.html"
